@@ -1,8 +1,6 @@
 import java.sql.*;
 import java.util.*;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
-
 /**
  * This class handles the backend code for fetching student and faculty
  * information through the java MySQL class.
@@ -121,6 +119,7 @@ public class DataLayer {
      * @param firstName the first name of the faculty member (optional).
      * @param lastName the first name of the faculty member (optional).
      * @param school the first name of the faculty member (optional).
+     * @param facultyAbstract the abstract of the faculty member (optional).
      * @return a string containing the information of all faculty members fetched.
      */
     public String getFacultyInfo(String firstName, String lastName, String school, String facultyAbstract) {
@@ -162,8 +161,6 @@ public class DataLayer {
             }
 
         }
-
-        System.out.println(sql);
 
         try {
 
