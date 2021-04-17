@@ -152,7 +152,7 @@ public class DataLayer {
             }
             else if (sql.contains("WHERE")) {
 
-                sql += "AND WHERE " + parameterNames.get(i) + "='" + specifiedFacultyInfo.get(i) + "' ";
+                sql += "AND " + parameterNames.get(i) + "='" + specifiedFacultyInfo.get(i) + "' ";
 
             }
             else {
@@ -162,6 +162,8 @@ public class DataLayer {
             }
 
         }
+
+        System.out.println(sql);
 
         try {
 
