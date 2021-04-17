@@ -18,7 +18,6 @@ public class Presentation {
 
     DataLayer dataLayer = new DataLayer();
     Scanner scanner;
-    int recordCount = 0;
 
     /**
      * No-parameter constructor for this class
@@ -57,87 +56,7 @@ public class Presentation {
 
         }
 
-        System.out.print("\n");
-        System.out.print("Please enter a new PassengerID to add: ");
-        String passengerID = scanner.next();
-
-        System.out.print("\n");
-        System.out.print("Please enter a new first name to add: ");
-        String firstName = scanner.next();
-
-        System.out.print("\n");
-        System.out.print("Please enter a new last name to add: ");
-        String lastName = scanner.next();
-        scanner.nextLine();
-
-        System.out.print("\n");
-        System.out.println("Please enter a street name to add: ");
-        String street = scanner.nextLine();
-
-        System.out.print("\n");
-        System.out.print("Please enter a new zip to add: ");
-        String zip = scanner.next();
-        
-        if (dataLayer.addPassenger(passengerID, firstName, lastName, street, zip)) {
-
-            recordCount++;
-            System.out.print("\n");
-            System.out.println("Successfully added " + firstName + " " + lastName + " to the database.");
-
-        }
-        else {
-
-            System.out.print("\n");
-            System.out.println("Error adding " + firstName + " " +  lastName + " to the database.");
-
-        }
-
-        System.out.println("The number of rows in the passenger table is now: " + dataLayer.getPassengerCount());
-
-        System.out.print("\n");
-        System.out.print("Please enter the last name of the person you want to delete: ");
-        lastName = scanner.next();
-
-        System.out.print("\n");
-        System.out.print("Please enter the first name of the person you want to delete: ");
-        firstName = scanner.next();
-        
-        if (dataLayer.deletePassenger(lastName, firstName)) {
-
-            System.out.print("\n");
-            System.out.println("Successfully deleted passenger with last name " + lastName + " and first name " + firstName);
-
-        }
-        else {
-
-            System.out.print("\n");
-            System.out.println("Error deleting passenger with last name " + lastName + " and first name " + firstName);
-
-        }
-
-        System.out.print("\n");
-        System.out.print("Please enter a PassengerID to update its street: ");
-        passengerID = scanner.next();
-        scanner.nextLine();
-
-        System.out.print("\n");
-        System.out.print("Please enter the new street name for the passenger: ");
-        street = scanner.nextLine();
-
-        if (dataLayer.updatePassenger(passengerID, street)) {
-
-            System.out.print("\n");
-            System.out.println("Successfully updated passenger with PassengerID " + passengerID + "'s street name to " + street);
-
-        }
-        else {
-
-            System.out.print("\n");
-            System.out.println("Error updating passenger with PassengerID " + passengerID + "'s street name to " + street);
-
-        }
-
-        dataLayer.staffRoutine();
+        System.out.println(dataLayer.getFacultyInfo("", "c", "c", "conor"));;
 
     }
 
@@ -146,7 +65,6 @@ public class Presentation {
      */
     public static void main(String[] args) {
 
-        System.out.println("Keegan, Conor " + new Date());
         new Presentation();
 
     }
