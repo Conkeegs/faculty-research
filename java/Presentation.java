@@ -1,6 +1,10 @@
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -40,16 +44,6 @@ public class Presentation extends JFrame {
 //        String password = scanner.next();
 //        System.out.print("\n");
 //
-//        if (dataLayer.loadDriver()) {
-//
-//            System.out.println("Successfully loaded drivers");
-//
-//        }
-//        else {
-//
-//            System.out.println("Error loading drivers");
-//
-//        }
 //
 //        if (dataLayer.connect(username, password)) {
 //
@@ -64,6 +58,17 @@ public class Presentation extends JFrame {
 //        }
 //
 //        System.out.println(dataLayer.getFacultyInfo("Conor", "", "RIT", ""));;
+    	
+    	// Set window title
+    	super("ISTE-330 Group Project - Faculty Research Database");
+    	
+    	// Try to load the database driver
+        if (dataLayer.loadDriver()) {
+            System.out.println("Successfully loaded drivers");
+        }
+        else {
+            System.out.println("Error loading drivers");
+        }
 
     	/*---------------- Begin Database Login Prompt ---------------------*/
     	JPanel jpLoginBox = new JPanel(new GridLayout(2,2));
@@ -90,7 +95,13 @@ public class Presentation extends JFrame {
     	} while (dataLayer.connect(jtfUser.getText(), jtfPass.getText()));
     	/*---------------- End Database Login Prompt ---------------------*/
     	
+    	// Open the faculty login panel after logging in to the DB
+    	setOpenedPanel(new loginUser());
     	
+    	// Set close operation, make JFrame visible, and fit window to component size
+    	setDefaultCloseOperation(EXIT_ON_CLOSE);
+    	setVisible(true);
+    	pack();
     }
 
     /**
@@ -116,6 +127,7 @@ public class Presentation extends JFrame {
     	// Add the JPanel to the layout and update the variable
     	pLayer.add(newPanel, BorderLayout.CENTER);
     	openedPanel = newPanel;
+    	pLayer.pack();
     }
     
     /**
@@ -140,6 +152,64 @@ class loginUser extends JPanel {
 	
 	private static final long serialVersionUID = 3814139183564072897L;
 	
+	/**
+	 * Initializes a loginUser JPanel.
+	 */
+	public loginUser() {
+		// Instantiate Swing components
+		JPanel jpLogin = new JPanel();
+		JPanel jpUsername = new JPanel();
+		JPanel jpPass = new JPanel();
+		JPanel jpButtons = new JPanel();
+		JTextField jtfUsername = new JTextField();
+		JTextField jtfPass = new JPasswordField();
+		JButton jbGuest = new JButton("Continue as Guest");
+		JButton jbLogin = new JButton("Login");
+		
+		// Set layouts of respective JPanels
+		setLayout(new BorderLayout());
+		jpLogin.setLayout(new BoxLayout(jpLogin, BoxLayout.Y_AXIS));
+		
+		/*
+		 * If the user decides to continue as a guest open the query panel
+		 * because non-faculty users may only query
+		 */
+		jbGuest.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Presentation.setOpenedPanel(new queryPanel());
+			}
+		});
+		
+		// Otherwise login as a faculty user
+		jbLogin.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// For future use
+			}
+		});
+		
+		// Add components to username panel
+		jpUsername.add(new JLabel("Username: "));
+		jpUsername.add(jtfUsername);
+		
+		// Add components to password panel
+		jpPass.add(new JLabel("Password: "));
+		jpPass.add(jtfPass);
+		
+		// Add components to button panel
+		jpButtons.add(jbGuest);
+		jpButtons.add(jbLogin);
+		
+		// Add panels to login form
+		jpLogin.add(jpUsername);
+		jpLogin.add(jpPass);
+		jpLogin.add(jpButtons);
+		
+		// Add heading and login form
+		add(new JLabel("Login as Faculty"), BorderLayout.NORTH);
+		add(jpLogin);
+	}
 }
 
 /**
