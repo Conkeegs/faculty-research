@@ -11,6 +11,7 @@ CREATE DATABASE research;
 
 USE research;
 
+DROP TABLE IF EXISTS faculty;
 CREATE TABLE faculty (
 
     facultyID INT,
@@ -21,6 +22,7 @@ CREATE TABLE faculty (
 
 );
 
+DROP TABLE IF EXISTS student;
 CREATE TABLE student (
 
     studentID INT,
@@ -31,26 +33,48 @@ CREATE TABLE student (
 
 );
 
+DROP TABLE IF EXISTS facultyAbstracts;
 CREATE TABLE facultyAbstracts (
 
     facultyAbstractID INT,
     facultyID INT,
     abstract VARCHAR (500),
     CONSTRAINT facultyAbstracts_faculty_fk FOREIGN KEY (facultyID) REFERENCES faculty(facultyID),
-    CONSTRAINT facultyInterests_pk PRIMARY KEY (facultyAbstractID)
+    CONSTRAINT facultyInterests_pk PRIMARY KEY (facultyAbstractID, facultyID)
 
 );
 
+DROP TABLE IF EXISTS studentAbstracts;
 CREATE TABLE studentAbstracts (
 
     studentAbstractID INT,
     studentID INT,
-    abstract VARCHAR (500),
     CONSTRAINT studentAbstracts_student_fk FOREIGN KEY (studentID) REFERENCES student(studentID),
-    CONSTRAINT studentInterests_pk PRIMARY KEY (studentAbstractID)
+    CONSTRAINT studentInterests_pk PRIMARY KEY (studentAbstractID, studentID)
 
 );
 
+DROP TABLE IF EXISTS skills;
+CREATE TABLE skills (
+
+    skillID INT,
+    skill VARCHAR(10),
+    CONSTRAINT PRIMARY KEY (skillID)
+
+);
+
+DROP TABLE IF EXISTS studentskill;
+CREATE TABLE studentskill (
+
+    studentID INT,
+    skillID INT,
+    CONSTRAINT PRIMARY KEY (studentID, skillID),
+    CONSTRAINT studentSkill_student_fk FOREIGN KEY (studentID) REFERENCES student(studentID) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT studentSkill_skill_fk FOREIGN KEY (skillID) REFERENCES skills(skillID) ON DELETE CASCADE ON UPDATE CASCADE
+
+);
+
+DROP TABLE IF EXISTS facultyKeywords;
 CREATE TABLE facultyKeywords (
 
     facultyAbstractID INT,
@@ -59,6 +83,7 @@ CREATE TABLE facultyKeywords (
 
 );
 
+DROP TABLE IF EXISTS studentKeywords;
 CREATE TABLE studentKeywords (
 
     studentAbstractID INT,
