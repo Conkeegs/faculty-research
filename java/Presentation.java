@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
@@ -22,6 +23,8 @@ import javax.swing.JTextField;
 public class Presentation extends JFrame {
 
 	private static final long serialVersionUID = 4007551965360932344L;
+	private static JPanel openedPanel = null;
+	private static Presentation pLayer;
 	DataLayer dataLayer = new DataLayer();
 
     /**
@@ -76,6 +79,7 @@ public class Presentation extends JFrame {
     	
     	boolean failed = false;
     	
+    	// Ask the user for the database login until it's input correctly
     	do {
     		if (failed) {
     			JOptionPane.showMessageDialog(null, "Incorrect Database Login!", "Database Login Prompt", JOptionPane.ERROR_MESSAGE);
@@ -86,15 +90,41 @@ public class Presentation extends JFrame {
     	} while (dataLayer.connect(jtfUser.getText(), jtfPass.getText()));
     	/*---------------- End Database Login Prompt ---------------------*/
     	
+    	
     }
 
+    /**
+     * Getter for the Currently Opened JPanel.
+     * 
+     * @return JPanel Opened JPanel
+     */
+    public static JPanel getOpenedPanel() {
+    	return openedPanel;
+    }
+    
+    /**
+     * Swaps the Currently Opened Panel for a New One.
+     * 
+     * @param newPanel New JPanel to add to CENTER in layout
+     */
+    public static void setOpenedPanel(JPanel newPanel) {
+    	// If a JPanel has already been added, remove it
+    	if (openedPanel != null) {
+    		pLayer.remove(openedPanel);
+    	}
+    	
+    	// Add the JPanel to the layout and update the variable
+    	pLayer.add(newPanel, BorderLayout.CENTER);
+    	openedPanel = newPanel;
+    }
+    
     /**
      * Initializes the Presentation Layer.
      * 
      * @param args String[] command-line args
      */
     public static void main(String[] args) {
-        new Presentation();
+        pLayer = new Presentation();
     }
 }
 
