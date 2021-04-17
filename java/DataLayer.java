@@ -1,4 +1,7 @@
 import java.sql.*;
+import java.util.*;
+
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 
 /**
  * This class handles the backend code for fetching student and faculty
@@ -15,13 +18,20 @@ import java.sql.*;
 
 public class DataLayer {
 
-    private final String url = "jdbc:mysql://localhost/travel";
+    private final String url = "jdbc:mysql://localhost/facultyResearch";
     private final String DEFAULT_DRIVER = "com.mysql.cj.jdbc.Driver";
 
     private Connection conn;
+    private Statement statement;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
     private ResultSetMetaData resultSetMetaData;
+
+    public DataLayer() {
+
+        System.out.println(getFacultyInfo("", "c", "c", "conor"));;
+
+    }
 
     /**
      * This method uses a DriverManager static method to return a Connection object and connect
@@ -114,40 +124,92 @@ public class DataLayer {
 
     }
 
+    public static void main(String[] args) {
+
+        new DataLayer();
+
+    }
+
     /**
-     * This method adds a passenger into the database.
-     * @param passengerID the passengerID of the new passenger.
-     * @param firstName the first name of the new passenger.
-     * @param lastName the last name of the new passenger.
-     * @param street the street name of the new passenger.
-     * @param zip the zip of the new passenger.
-     * @return a boolean indicating whether the new passenger was added or not.
+     * This method fetches the information for faculty based on first name, last name, school, or abstract.
+     * @param firstName the first name of the faculty member (optional).
+     * @param lastName the first name of the faculty member (optional).
+     * @param school the first name of the faculty member (optional).
+     * @return a string containing the information of all faculty members fetched.
      */
-    public boolean addPassenger(String passengerID, String firstName, String lastName, String street, String zip) {
+    public String getFacultyInfo(String firstName, String lastName, String school, String facultyAbstract) {
+
+        ArrayList<String> specifiedFacultyInfo = new ArrayList<String>();
+        ArrayList<String> parameterNames = new ArrayList<String>();
+        String sql = "SELECT firstname, lastname, school, facultyabstract FROM faculty ";
+        String facultyInfo = "";
+
+        specifiedFacultyInfo.add(firstName);
+        specifiedFacultyInfo.add(lastName);
+        specifiedFacultyInfo.add(school);
+        specifiedFacultyInfo.add(facultyAbstract);
+
+        parameterNames.add("firstName");
+        parameterNames.add("lastName");
+        parameterNames.add("school");
+        parameterNames.add("facultyAbstract");
+
+        // filter the 'specifiedFacultyInfo' and 'parameterNames' ArrayLists so that only the parameters that aren't null/empty go in them.
+        for (int i = 0; i < specifiedFacultyInfo.size(); i++) {
+
+            if (specifiedFacultyInfo.get(i) == null || specifiedFacultyInfo.get(i).equals("")) {
+
+                specifiedFacultyInfo.remove(i);
+                parameterNames.remove(i);
+                i -= 1;
+
+            }
+            else if (sql.contains("WHERE")) {
+
+                sql += "AND WHERE " + parameterNames.get(i) + "='" + specifiedFacultyInfo.get(i) + "' ";
+
+            }
+            else {
+
+                sql += "WHERE " + parameterNames.get(i) + "='" + specifiedFacultyInfo.get(i) + "' ";
+
+            }
+
+        }
 
         try {
 
-            // inserts new passenger into database
-            preparedStatement = conn.prepareStatement("INSERT INTO passenger (passengerid, fname, lname, street, zip) VALUES (?, ?, ?, ?, ?)");
-            preparedStatement.setString(1, passengerID);
-            preparedStatement.setString(2, firstName);
-            preparedStatement.setString(3, lastName);
-            preparedStatement.setString(4, street);
-            preparedStatement.setString(5, zip);
-            preparedStatement.executeUpdate();
-            return true;
+            statement = conn.createStatement();
+
+            resultSet = statement.executeQuery(sql);
+            
+            while (resultSet.next()) {
+
+                String firstNameTemp = resultSet.getString("firstname");
+                String lastNameTemp = resultSet.getString("lastname");
+                String schoolTemp = resultSet.getString("school");
+                String facultyAbstractTemp = resultSet.getString("facultyabstract");
+
+                facultyInfo += "First Name: " + firstNameTemp + "\n" +
+                               "Last Name: " + lastNameTemp + "\n" +
+                               "School: " + schoolTemp + "\n" +
+                               "Abstract: " + facultyAbstractTemp + "\n\n";
+                
+            }
+
+            return facultyInfo;
 
         }
         catch(SQLException sqlException) {
 
             sqlException.printStackTrace();
-            return false;
+            return "SQL ERROR";
 
         }
         catch(Exception exception) {
 
             exception.printStackTrace();
-            return false;
+            return "GENERAL ERROR";
 
         }
 

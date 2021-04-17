@@ -5,11 +5,11 @@
 
 */
 
-DROP DATABASE IF EXISTS research;
+DROP DATABASE IF EXISTS facultyResearch;
 
-CREATE DATABASE research;
+CREATE DATABASE facultyResearch;
 
-USE research;
+USE facultyResearch;
 
 DROP TABLE IF EXISTS faculty;
 CREATE TABLE faculty (
@@ -18,6 +18,7 @@ CREATE TABLE faculty (
     firstName VARCHAR(50),
     lastName VARCHAR(50),
     school VARCHAR(100),
+    facultyAbstract VARCHAR (500),
     CONSTRAINT faculty_pk PRIMARY KEY (facultyID)
 
 );
@@ -33,16 +34,16 @@ CREATE TABLE student (
 
 );
 
-DROP TABLE IF EXISTS facultyAbstracts;
-CREATE TABLE facultyAbstracts (
+-- DROP TABLE IF EXISTS facultyAbstracts;
+-- CREATE TABLE facultyAbstracts (
 
-    facultyAbstractID INT,
-    facultyID INT,
-    abstract VARCHAR (500),
-    CONSTRAINT facultyAbstracts_faculty_fk FOREIGN KEY (facultyID) REFERENCES faculty(facultyID),
-    CONSTRAINT facultyInterests_pk PRIMARY KEY (facultyAbstractID, facultyID)
+--     facultyAbstractID INT,
+--     facultyID INT,
+--     abstract VARCHAR (500),
+--     CONSTRAINT facultyAbstracts_faculty_fk FOREIGN KEY (facultyID) REFERENCES faculty(facultyID),
+--     CONSTRAINT facultyInterests_pk PRIMARY KEY (facultyAbstractID, facultyID)
 
-);
+-- );
 
 DROP TABLE IF EXISTS studentAbstracts;
 CREATE TABLE studentAbstracts (
@@ -77,9 +78,9 @@ CREATE TABLE studentskill (
 DROP TABLE IF EXISTS facultyKeywords;
 CREATE TABLE facultyKeywords (
 
-    facultyAbstractID INT,
+    facultyID INT,
     keyword VARCHAR (50),
-    CONSTRAINT facultyKeywords_facultyAbstracts_fk FOREIGN KEY (facultyAbstractID) REFERENCES facultyAbstracts(facultyAbstractID)
+    CONSTRAINT facultyKeywords_faculty_fk FOREIGN KEY (facultyID) REFERENCES faculty(facultyID)
 
 );
 
