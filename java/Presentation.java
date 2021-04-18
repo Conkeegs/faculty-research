@@ -323,6 +323,9 @@ class queryPanel extends JPanel {
 		});
 		
 		add(jpQueryFields, BorderLayout.CENTER);
+		Presentation.getPLayer().revalidate();
+		Presentation.getPLayer().repaint();
+		Presentation.getPLayer().pack();
 	}
 	
 	/**
@@ -388,6 +391,9 @@ class queryPanel extends JPanel {
 		});
 		
 		add(jpQueryFields, BorderLayout.CENTER);
+		Presentation.getPLayer().revalidate();
+		Presentation.getPLayer().repaint();
+		Presentation.getPLayer().pack();
 	}
 	
 	/**
