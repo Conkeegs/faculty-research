@@ -2,14 +2,18 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
@@ -29,7 +33,7 @@ public class Presentation extends JFrame {
 	private static final long serialVersionUID = 4007551965360932344L;
 	private static JPanel openedPanel = null;
 	private static Presentation pLayer;
-	DataLayer dataLayer = new DataLayer();
+	private static DataLayer dLayer;
 
     /**
      * Constructor for Presentation Layer.
@@ -63,7 +67,7 @@ public class Presentation extends JFrame {
     	super("ISTE-330 Group Project - Faculty Research Database");
     	
     	// Try to load the database driver
-        if (dataLayer.loadDriver()) {
+        if (dLayer.loadDriver()) {
             System.out.println("Successfully loaded drivers");
         }
         else {
@@ -92,7 +96,7 @@ public class Presentation extends JFrame {
     		
     		JOptionPane.showMessageDialog(null, jpLoginBox, "Database Login Prompt", JOptionPane.INFORMATION_MESSAGE);
     		failed = true;
-    	} while (dataLayer.connect(jtfUser.getText(), jtfPass.getText()));
+    	} while (dLayer.connect(jtfUser.getText(), jtfPass.getText()));
     	/*---------------- End Database Login Prompt ---------------------*/
     	
     	// Open the faculty login panel after logging in to the DB
@@ -128,6 +132,14 @@ public class Presentation extends JFrame {
     	pLayer.add(newPanel, BorderLayout.CENTER);
     	openedPanel = newPanel;
     	pLayer.pack();
+    }
+    
+    public static Presentation getPLayer() {
+    	return pLayer;
+    }
+    
+    public static DataLayer getDLayer() {
+    	return dLayer;
     }
     
     /**
@@ -221,9 +233,203 @@ class loginUser extends JPanel {
  * @author Nicholas Johnson
  */
 class queryPanel extends JPanel {
-
+	
 	private static final long serialVersionUID = 5635321639571267414L;
 	
+	private final String FAC = "Faculty";
+	private final String STUD = "Student";
+	
+	private JPanel jpQueryFields;
+	private String openedFields;
+	
+	public queryPanel() {
+		// Instantiate components
+		JComboBox<String> jcbFacStud = new JComboBox<String>();
+		jpQueryFields = new JPanel();
+		
+		// Set layout and add a border around the form
+		setLayout(new BorderLayout());
+		setBorder(BorderFactory.createLoweredBevelBorder());
+		
+		// Add items to dropdown box
+		jcbFacStud.addItem(FAC);
+		jcbFacStud.addItem(STUD);
+		
+		// Default to faculty
+		jcbFacStud.setSelectedItem(FAC);
+		
+		// Create faculty form
+		queryFAC();
+		
+		jcbFacStud.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				/*
+				 * Might not need the portion of the if statement to check which field is stored in openedFields
+				 * depending on whether or not this event triggers if the choice is unchanged
+				 */
+				if (jcbFacStud.getSelectedItem().equals(FAC) && !openedFields.equals(FAC)) {
+					queryFAC();
+				}
+				if (jcbFacStud.getSelectedItem().equals(STUD) && !openedFields.equals(STUD)) {
+					querySTUD();
+				}
+			}
+		});
+		
+		add(jcbFacStud, BorderLayout.NORTH);
+	}
+	
+	private void queryFAC() {
+		// Set tracker variable and remove existing panel
+		openedFields = FAC;
+		remove(jpQueryFields);
+		
+		jpQueryFields = new JPanel();
+		
+		// Instantiate components
+		JPanel jpFName = new JPanel();
+		JPanel jpLName = new JPanel();
+		JPanel jpSchool = new JPanel();
+		JPanel jpAbstract = new JPanel();
+		JPanel jpKeywords = new JPanel();
+		JTextField jtfFName = new JTextField();
+		JTextField jtfLName = new JTextField();
+		JTextField jtfSchool = new JTextField();
+		JTextField jtfKeywords = new JTextField();
+		JTextArea jtaAbstract = new JTextArea(20, 25);
+		JButton jbSubmit = new JButton("Submit");
+		
+		// Set layout to be vertical
+		jpQueryFields.setLayout(new BoxLayout(jpQueryFields, BoxLayout.Y_AXIS));
+		
+		// Add components to respective panels
+		jpFName.add(new JLabel("First Name: "));
+		jpFName.add(jtfFName);
+		jpLName.add(new JLabel("Last Name: "));
+		jpLName.add(jtfLName);
+		jpSchool.add(new JLabel("School: "));
+		jpSchool.add(jtfSchool);
+		jpAbstract.add(new JLabel("Abstract: "));
+		jpAbstract.add(jtaAbstract);
+		jpKeywords.add(new JLabel("Keywords: "));
+		jpKeywords.add(jtfKeywords);
+		
+		// Add components to form
+		jpQueryFields.add(jpFName);
+		jpQueryFields.add(jpLName);
+		jpQueryFields.add(jpSchool);
+		jpQueryFields.add(jpAbstract);
+		jpQueryFields.add(jpKeywords);
+		jpQueryFields.add(jbSubmit);
+		
+		jbSubmit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String fName = jtfFName.getText();
+				String lName = jtfLName.getText();
+				String school = jtfSchool.getText();
+				String fAbstract = jtaAbstract.getText();
+				@SuppressWarnings("unused")
+				ArrayList<String> keywords = parseCommaList(jtfKeywords.getText());
+				
+				// Get results from data layer
+				String res = Presentation.getDLayer().getFacultyInfo(fName, lName, school, fAbstract);
+				/*
+				 * For use once keywords are added to method:
+				 * Presentation.getDLayer().getFacultyInfo(fName, lName, school, fAbstract, keywords);
+				 */
+				
+				Presentation.setOpenedPanel(new queryResults(res));
+			}
+		});
+		
+		add(jpQueryFields, BorderLayout.CENTER);
+	}
+	
+	/**
+	 * Switch the Query Panel to be for Students.
+	 */
+	private void querySTUD() {
+		// Set tracker variable and remove the existing panel
+		openedFields = STUD;
+		remove(jpQueryFields);
+		
+		jpQueryFields = new JPanel();
+		
+		// Instantiate components
+		JPanel jpFName = new JPanel();
+		JPanel jpLName = new JPanel();
+		JPanel jpSchool = new JPanel();
+		JPanel jpSkills = new JPanel();
+		JTextField jtfFName = new JTextField();
+		JTextField jtfLName = new JTextField();
+		JTextField jtfSchool = new JTextField();
+		JTextField jtfSkills = new JTextField();
+		JButton jbSubmit = new JButton("Submit");
+		
+		// Set the layout of the form to be vertical
+		jpQueryFields.setLayout(new BoxLayout(jpQueryFields, BoxLayout.Y_AXIS));
+		
+		// Add components to respective panel
+		jpFName.add(new JLabel("First Name: "));
+		jpFName.add(jtfFName);
+		jpLName.add(new JLabel("Last Name: "));
+		jpLName.add(jtfLName);
+		jpSchool.add(new JLabel("School: "));
+		jpSchool.add(jtfSchool);
+		jpSkills.add(new JLabel("Skills: "));
+		jpSkills.add(jtfSkills);
+		
+		// Add components to form
+		jpQueryFields.add(jpFName);
+		jpQueryFields.add(jpLName);
+		jpQueryFields.add(jpSchool);
+		jpQueryFields.add(jpSkills);
+		jpQueryFields.add(jbSubmit);
+		
+		jbSubmit.addActionListener(new ActionListener() {
+			@SuppressWarnings("unused")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String fName = jtfFName.getText();
+				String lName = jtfLName.getText();
+				String school = jtfSchool.getText();
+				ArrayList<String> skills = parseCommaList(jtfSkills.getText());
+				
+				// To be uncommented once getStudentInfo is added to the data layer
+				
+				// String res = Presentation.getDLayer().getStudentInfo(fName, lName, school, skills);
+				/*
+				 * For use once keywords are added to method:
+				 * Presentation.getDLayer().getStudentInfo(fName, lName, school, skills);
+				 */
+				
+				// Presentation.setOpenedPanel(new queryResults(res));
+			}
+		});
+		
+		add(jpQueryFields, BorderLayout.CENTER);
+	}
+	
+	/**
+	 * Convert Comma Separated List Input to an ArrayList.
+	 * 
+	 * @param keywords String keywords to convert to an ArrayList
+	 * @return ArrayList<String> all input keywords as an ArrayList
+	 */
+	private ArrayList<String> parseCommaList(String ls) {
+		ArrayList<String> ret = new ArrayList<String>();
+		// Separate comma-separated keywords
+		String[] retArr = ls.split(",");
+		
+		// Trim whitespace from each keyword and add to return ArrayList
+		for (String i: retArr) {
+			ret.add(i.trim());
+		}
+		
+		return ret;
+	}
 }
 
 /**
@@ -249,7 +455,14 @@ class insertPanel extends JPanel {
  * @author Nicholas Johnson
  */
 class queryResults extends JPanel {
-
+	
 	private static final long serialVersionUID = -5998403958243395034L;
 	
+	/**
+	 * Initialize Result Panel.
+	 * 
+	 * @param resContent String Result content to be displayed
+	 */
+	public queryResults(String resContent) {
+	}
 }
