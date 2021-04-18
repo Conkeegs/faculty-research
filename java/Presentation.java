@@ -464,5 +464,18 @@ class queryResults extends JPanel {
 	 * @param resContent String Result content to be displayed
 	 */
 	public queryResults(String resContent) {
+		JButton jbBack = new JButton("Back");
+		
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		
+		jbBack.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Presentation.setOpenedPanel(new queryPanel());
+			}
+		});
+		
+		add(new JLabel(resContent));
+		add(jbBack);
 	}
 }
