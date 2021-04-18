@@ -39,32 +39,10 @@ public class Presentation extends JFrame {
      * Constructor for Presentation Layer.
      */
     public Presentation() {
-//        scanner = new Scanner(System.in);
-//        System.out.print("Please enter your username: ");
-//        String username = scanner.next();
-//        System.out.print("\n");
-//
-//        System.out.print("Please enter your password: ");
-//        String password = scanner.next();
-//        System.out.print("\n");
-//
-//
-//        if (dataLayer.connect(username, password)) {
-//
-//            System.out.println("Succussfully connected to database");
-//
-//        }
-//        else {
-//
-//            System.out.println("Error connecting to database");
-//            System.exit(1);
-//
-//        }
-//
-//        System.out.println(dataLayer.getFacultyInfo("Conor", "", "RIT", ""));;
-    	
     	// Set window title
     	super("ISTE-330 Group Project - Faculty Research Database");
+    	
+    	System.out.println("Faculty Research Database\nISTE-330\nBy: Conor Keegan, Eli Hopkins, Evan Hiltzik");
     	
     	// Try to load the database driver
         if (dLayer.loadDriver()) {
@@ -96,11 +74,8 @@ public class Presentation extends JFrame {
     		
     		JOptionPane.showMessageDialog(null, jpLoginBox, "Database Login Prompt", JOptionPane.INFORMATION_MESSAGE);
     		failed = true;
-    	} while (dLayer.connect(jtfUser.getText(), jtfPass.getText()));
+    	} while (!dLayer.connect(jtfUser.getText(), jtfPass.getText()));
     	/*---------------- End Database Login Prompt ---------------------*/
-    	
-    	// Open the faculty login panel after logging in to the DB
-    	setOpenedPanel(new loginUser());
     	
     	// Set close operation, make JFrame visible, and fit window to component size
     	setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -148,7 +123,10 @@ public class Presentation extends JFrame {
      * @param args String[] command-line args
      */
     public static void main(String[] args) {
-        pLayer = new Presentation();
+    	dLayer = new DataLayer();
+    	pLayer = new Presentation();
+    	// Open the faculty login panel
+    	setOpenedPanel(new loginUser());
     }
 }
 
@@ -173,8 +151,8 @@ class loginUser extends JPanel {
 		JPanel jpUsername = new JPanel();
 		JPanel jpPass = new JPanel();
 		JPanel jpButtons = new JPanel();
-		JTextField jtfUsername = new JTextField();
-		JTextField jtfPass = new JPasswordField();
+		JTextField jtfUsername = new JTextField(20);
+		JTextField jtfPass = new JPasswordField(20);
 		JButton jbGuest = new JButton("Continue as Guest");
 		JButton jbLogin = new JButton("Login");
 		
@@ -293,10 +271,10 @@ class queryPanel extends JPanel {
 		JPanel jpSchool = new JPanel();
 		JPanel jpAbstract = new JPanel();
 		JPanel jpKeywords = new JPanel();
-		JTextField jtfFName = new JTextField();
-		JTextField jtfLName = new JTextField();
-		JTextField jtfSchool = new JTextField();
-		JTextField jtfKeywords = new JTextField();
+		JTextField jtfFName = new JTextField(20);
+		JTextField jtfLName = new JTextField(20);
+		JTextField jtfSchool = new JTextField(20);
+		JTextField jtfKeywords = new JTextField(20);
 		JTextArea jtaAbstract = new JTextArea(20, 25);
 		JButton jbSubmit = new JButton("Submit");
 		
@@ -362,10 +340,10 @@ class queryPanel extends JPanel {
 		JPanel jpLName = new JPanel();
 		JPanel jpSchool = new JPanel();
 		JPanel jpSkills = new JPanel();
-		JTextField jtfFName = new JTextField();
-		JTextField jtfLName = new JTextField();
-		JTextField jtfSchool = new JTextField();
-		JTextField jtfSkills = new JTextField();
+		JTextField jtfFName = new JTextField(20);
+		JTextField jtfLName = new JTextField(20);
+		JTextField jtfSchool = new JTextField(20);
+		JTextField jtfSkills = new JTextField(20);
 		JButton jbSubmit = new JButton("Submit");
 		
 		// Set the layout of the form to be vertical
