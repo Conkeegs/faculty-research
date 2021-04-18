@@ -92,3 +92,10 @@ CREATE TABLE facultyKeywords (
 --     CONSTRAINT studentKeywords_studentAbstracts_fk FOREIGN KEY (studentAbstractID) REFERENCES studentAbstracts(studentAbstractID)
 
 -- );
+
+INSERT INTO student(studentid, firstname, lastname, school) VALUES (3, "Steve", "Roberts", "RIT");
+INSERT INTO student(studentid, firstname, lastname, school) VALUES (4, "Mason", "Large", "RIT");
+INSERT INTO student(studentid, firstname, lastname, school) VALUES (5, "Henry", "Green", "RIT");
+INSERT INTO student(studentid, firstname, lastname, school) VALUES (6, "Chirs", "Blue", "RIT");
+INSERT INTO student(studentid, firstname, lastname, school) VALUES (7, "Sarah", "Jones", "RIT");
+INSERT INTO student(studentid, firstname, lastname, school) VALUES (8, "Conor", "Keegan", "RIT");
