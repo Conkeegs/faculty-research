@@ -378,15 +378,10 @@ class queryPanel extends JPanel {
 				String school = jtfSchool.getText();
 				ArrayList<String> skills = parseCommaList(jtfSkills.getText());
 				
-				// To be uncommented once getStudentInfo is added to the data layer
+				// Skills to be added later
+				String res = Presentation.getDLayer().getStudentInfo(fName, lName, school);
 				
-				// String res = Presentation.getDLayer().getStudentInfo(fName, lName, school, skills);
-				/*
-				 * For use once keywords are added to method:
-				 * Presentation.getDLayer().getStudentInfo(fName, lName, school, skills);
-				 */
-				
-				// Presentation.setOpenedPanel(new queryResults(res));
+				Presentation.setOpenedPanel(new queryResults(res));
 			}
 		});
 		
