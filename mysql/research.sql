@@ -45,15 +45,15 @@ CREATE TABLE student (
 
 -- );
 
-DROP TABLE IF EXISTS studentAbstracts;
-CREATE TABLE studentAbstracts (
+-- DROP TABLE IF EXISTS studentAbstracts;
+-- CREATE TABLE studentAbstracts (
 
-    studentAbstractID INT,
-    studentID INT,
-    CONSTRAINT studentAbstracts_student_fk FOREIGN KEY (studentID) REFERENCES student(studentID),
-    CONSTRAINT studentInterests_pk PRIMARY KEY (studentAbstractID, studentID)
+--     studentAbstractID INT,
+--     studentID INT,
+--     CONSTRAINT studentAbstracts_student_fk FOREIGN KEY (studentID) REFERENCES student(studentID),
+--     CONSTRAINT studentInterests_pk PRIMARY KEY (studentAbstractID, studentID)
 
-);
+-- );
 
 DROP TABLE IF EXISTS skills;
 CREATE TABLE skills (
@@ -70,8 +70,8 @@ CREATE TABLE studentskill (
     studentID INT,
     skillID INT,
     CONSTRAINT PRIMARY KEY (studentID, skillID),
-    CONSTRAINT studentSkill_student_fk FOREIGN KEY (studentID) REFERENCES student(studentID) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT studentSkill_skill_fk FOREIGN KEY (skillID) REFERENCES skills(skillID) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT studentSkill_student_fk FOREIGN KEY (studentID) REFERENCES student(studentID) ON DELETE CASCADE,
+    CONSTRAINT studentSkill_skill_fk FOREIGN KEY (skillID) REFERENCES skills(skillID) ON DELETE CASCADE
 
 );
 
@@ -84,11 +84,11 @@ CREATE TABLE facultyKeywords (
 
 );
 
-DROP TABLE IF EXISTS studentKeywords;
-CREATE TABLE studentKeywords (
+-- DROP TABLE IF EXISTS studentKeywords;
+-- CREATE TABLE studentKeywords (
 
-    studentAbstractID INT,
-    keyword VARCHAR (50),
-    CONSTRAINT studentKeywords_studentAbstracts_fk FOREIGN KEY (studentAbstractID) REFERENCES studentAbstracts(studentAbstractID)
+--     studentAbstractID INT,
+--     keyword VARCHAR (50),
+--     CONSTRAINT studentKeywords_studentAbstracts_fk FOREIGN KEY (studentAbstractID) REFERENCES studentAbstracts(studentAbstractID)
 
-);
+-- );

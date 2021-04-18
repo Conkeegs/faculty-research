@@ -54,7 +54,7 @@ public class Presentation {
 
         }
 
-        System.out.println(dataLayer.getFacultyInfo("Conor", "", "RIT", ""));;
+        System.out.println(dataLayer.getStudentInfo("Conor", "Keegan", ""));
 
     }
 
