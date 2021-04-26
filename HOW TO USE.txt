@@ -1,0 +1,6 @@
+For now, only searching for students works. We will add more functionality later, as one of our groups members has left.
+
+Capital letters matter, so please view the SQL file for the inserts at the bottom. This will tell you the name of students
+and the schools they attend.
+
+"presentation.java" contains main method.
