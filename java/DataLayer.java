@@ -524,7 +524,62 @@ public class DataLayer {
         }
     }
 
-    public static String[] hashPass(String plainPass) {
+    public boolean addFacLogin(int facultyID, String uname, String pass) {
+        String[] pwHashInfo = hashPass(pass);
+
+        try {
+            PreparedStatement pStatement = conn.prepareStatement("UPDATE faculty SET username=?, pwhash=?, salt=? WHERE facultyID=?;");
+
+            pStatement.setString(1, uname);
+            pStatement.setString(2, pwHashInfo[1]);
+            pStatement.setString(3, pwHashInfo[0]);
+            pStatement.setInt(4, facultyID);
+
+            pStatement.executeUpdate();
+
+            pStatement.close();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public int checkFacLogin(String uname, String pass) {
+        int facID = -1;
+        String pwhash = "";
+        String salt = "";
+
+        try {
+            PreparedStatement pStatement = conn.prepareStatement("SELECT facultyID, pwhash, salt FROM faculty WHERE uname=?");
+
+            pStatement.setString(1, uname);
+
+            ResultSet rs = pStatement.executeQuery();
+
+            if (rs.next()) {
+                facID = rs.getInt("facultyID");
+                pwhash = rs.getString("pwhash");
+                salt = rs.getString("salt");
+    
+                rs.close();
+                pStatement.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+
+        if (verifyPass(salt, pwhash, pass)) {
+            return facID;
+        }
+
+        return -1;
+    }
+
+    private static String[] hashPass(String plainPass) {
         SecureRandom saltGen = new SecureRandom();
 
         byte[] salt = new byte[32];
@@ -545,7 +600,7 @@ public class DataLayer {
         return null;
     }
 
-    public static boolean verifyPass(String salt, String hash, String plainPass) {
+    private static boolean verifyPass(String salt, String hash, String plainPass) {
         PBEKeySpec kSpec = new PBEKeySpec(plainPass.toCharArray(), Base64.getDecoder().decode(salt), 10000, 500);
 
         try {

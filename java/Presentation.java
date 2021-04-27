@@ -103,6 +103,10 @@ public class Presentation extends JFrame {
                 id = sc.nextInt();
                 sc.nextLine();
 
+				if (id == -1) {
+					break;
+				}
+
                 System.out.print("Enter Username for Faculty with ID " + id + ": ");
                 String uname = sc.nextLine();
 
@@ -115,7 +119,7 @@ public class Presentation extends JFrame {
                     pw = sc.nextLine();
                 }
 
-                // TODO: Add method from DataLayer to add login info to faculty user
+                dLayer.addFacLogin(id, uname, pw);
             } while (id != -1);
 
             sc.close();
@@ -165,6 +169,7 @@ public class Presentation extends JFrame {
      */
     public static void main(String[] args) {
     	dLayer = new DataLayer();
+
         if (args[0].equals("1")) {
             pLayer = new Presentation(1);
         } else {

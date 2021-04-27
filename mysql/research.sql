@@ -18,7 +18,7 @@ CREATE TABLE faculty (
     firstName VARCHAR(50),
     lastName VARCHAR(50),
     school VARCHAR(100),
-    username VARCHAR(50),
+    username VARCHAR(50) UNIQUE,
     pwhash VARCHAR(500),
     salt VARCHAR(500),
     facultyAbstract VARCHAR (500),
