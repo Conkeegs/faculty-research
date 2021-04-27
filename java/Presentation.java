@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,6 +36,8 @@ public class Presentation extends JFrame {
 	private static JPanel openedPanel = null;
 	private static Presentation pLayer;
 	private static DataLayer dLayer;
+
+	public static int loggedFacID;
 
     /**
      * Constructor for Presentation Layer.
@@ -197,6 +200,7 @@ class loginUser extends JPanel {
 	 */
 	public loginUser() {
 		// Instantiate Swing components
+		JLabel jlIncorrectPass = new JLabel("Invalid Login!");
 		JPanel jpLogin = new JPanel();
 		JPanel jpUsername = new JPanel();
 		JPanel jpPass = new JPanel();
@@ -225,9 +229,20 @@ class loginUser extends JPanel {
 		jbLogin.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// For future use
+				int result = Presentation.getDLayer().checkFacLogin(jtfUsername.getText(), jtfPass.getText());
+
+				if (result != -1) {
+					Presentation.loggedFacID = result;
+					Presentation.setOpenedPanel(new insertPanel());
+				} else {
+					jtfPass.setText("");
+					jlIncorrectPass.setVisible(true);
+				}
 			}
 		});
+
+		jlIncorrectPass.setForeground(Color.RED);
+		jlIncorrectPass.setVisible(false);
 		
 		// Add components to username panel
 		jpUsername.add(new JLabel("Username: "));
@@ -465,9 +480,54 @@ class queryPanel extends JPanel {
  * @author Nicholas Johnson
  */
 class insertPanel extends JPanel {
-
 	private static final long serialVersionUID = -1597640241890801649L;
 	
+	public insertPanel() {
+
+	}
+}
+
+class facPanel extends JPanel {
+	private final String INS = "Insert";
+	private final String QUERY = "Query";
+	private JPanel openedPanel;
+
+	public facPanel() {
+		JComboBox<String> jcbInsQuery = new JComboBox<String>();
+		JPanel contents = new JPanel();
+
+		contents.setLayout(new BoxLayout(contents, BoxLayout.Y_AXIS));
+
+		jcbInsQuery.addItem(INS);
+		jcbInsQuery.addItem(QUERY);
+
+		jcbInsQuery.setSelectedItem(INS);
+
+		openedPanel = new insertPanel();
+
+		jcbInsQuery.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				/*
+				 * Might not need the portion of the if statement to check which field is stored in openedFields
+				 * depending on whether or not this event triggers if the choice is unchanged
+				 */
+				if (jcbInsQuery.getSelectedItem().equals(INS) && !(openedPanel instanceof insertPanel)) {
+					contents.remove(openedPanel);
+					openedPanel = new insertPanel();
+					contents.add(openedPanel);
+				}
+				if (jcbInsQuery.getSelectedItem().equals(QUERY) && !(openedPanel instanceof queryPanel)) {
+					contents.remove(openedPanel);
+					openedPanel = new queryPanel();
+					contents.add(openedPanel);
+				}
+			}
+		});
+
+		contents.add(jcbInsQuery);
+		contents.add(openedPanel);
+	}
 }
 
 /**
