@@ -232,7 +232,7 @@ public class DataLayer {
 
                         for (int y = 0; y < allFacultyKeywords.get(x).size(); y++) {
 
-                            if (keyWords.get(i).equals(allFacultyKeywords.get(x).get(y))) {
+                            if (keyWords.get(i).toLowerCase().equals(allFacultyKeywords.get(x).get(y).toLowerCase())) {
 
                                 matches++;
 
@@ -436,7 +436,7 @@ public class DataLayer {
 
                         for (int y = 0; y < allStudentSkills.get(x).size(); y++) {
 
-                            if (skills.get(i).equals(allStudentSkills.get(x).get(y))) {
+                            if (skills.get(i).toLowerCase().equals(allStudentSkills.get(x).get(y).toLowerCase())) {
 
                                 matches++;
 
