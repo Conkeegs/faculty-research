@@ -669,7 +669,7 @@ public class DataLayer {
         String salt = "";
 
         try {
-            PreparedStatement pStatement = conn.prepareStatement("SELECT facultyID, pwhash, salt FROM faculty WHERE uname=?");
+            PreparedStatement pStatement = conn.prepareStatement("SELECT facultyID, pwhash, salt FROM faculty WHERE username=?");
 
             pStatement.setString(1, uname);
 
@@ -722,6 +722,8 @@ public class DataLayer {
         try {
             SecretKeyFactory keyFac = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
             byte[] hashedPass = keyFac.generateSecret(kSpec).getEncoded();
+
+            System.out.println("new hash: " + hashedPass + "\nold hash: " + Base64.getDecoder().decode(hash));
 
             if (hashedPass == Base64.getDecoder().decode(hash)) {
                 return true;
