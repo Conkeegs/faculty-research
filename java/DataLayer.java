@@ -112,7 +112,7 @@ public class DataLayer {
 
     /**
      * This method fetches the information for faculty based on first name, last
-     * name, school, or abstract.
+     * name, school, abstract, or keywords.
      * 
      * @param firstName       the first name of the faculty member (optional).
      * @param lastName        the first name of the faculty member (optional).
@@ -291,14 +291,17 @@ public class DataLayer {
 
             // populate the 'facultyInfo' String with all information from the
             // 'greatestMatchingFaculty' ArrayList
+            facultyInfo += "<html>";
             for (int i = 0; i < greatestMatchingFaculty.size(); i++) {
 
-                facultyInfo += "<html>First Name: " + greatestMatchingFaculty.get(i).get(1) + "<br />" + "Last Name: "
+                facultyInfo += "First Name: " + greatestMatchingFaculty.get(i).get(1) + "<br />" + "Last Name: "
                         + greatestMatchingFaculty.get(i).get(2) + "<br />" + "School: "
                         + greatestMatchingFaculty.get(i).get(3) + "<br />" + "Abstract: "
-                        + greatestMatchingFaculty.get(i).get(4) + "<br />" + "</html>";
+                        + greatestMatchingFaculty.get(i).get(4) + "<br /><br />";
 
             }
+
+            facultyInfo += "</html>";
 
             return facultyInfo;
 
@@ -490,19 +493,51 @@ public class DataLayer {
 
             }
 
-            int count = 0;
-            // populate the 'studentInfo' String with all information from the
-            // 'greatestMatchingStudents' ArrayList
+            // This loop takes all of the students in the 'greatestMatchingStudents' ArrayList and gets each
+            // of their specific skils. Then, these skills are appended to the end of each ArrayList inside
+            // of 'greatestMatchingStudents' so they can be output in the swing application.
             for (int i = 0; i < greatestMatchingStudents.size(); i++) {
 
-                studentInfo += "<html>First Name: " + greatestMatchingStudents.get(i).get(1) + "<br />" + "Last Name: "
-                        + greatestMatchingStudents.get(i).get(2) + "<br />" + "School: "
-                        + greatestMatchingStudents.get(i).get(3) + "<br />" + "Abstract: ";
-                        count++;
+                String tempSkills = "";
+
+                statement = conn.createStatement();
+                resultSet = statement.executeQuery("SELECT skill FROM skills JOIN studentskill USING (skillid) WHERE studentid = " + greatestMatchingStudents.get(i).get(0));
+
+                while (resultSet.next()) {
+
+                    String skill = resultSet.getString(1);
+
+                    if (tempSkills.equals("")) {
+
+                        tempSkills += skill;
+
+                    }
+                    else {
+
+                        tempSkills += " | " + skill;
+
+                    }
+
+                }
+
+                greatestMatchingStudents.get(i).add(tempSkills);
 
             }
 
-            System.out.println(allStudentInfo.size() + " " + count);
+            // populate the 'studentInfo' String with all information from the
+            // 'greatestMatchingStudents' ArrayList
+            studentInfo += "<html>";
+            for (int i = 0; i < greatestMatchingStudents.size(); i++) {
+
+                studentInfo += "First Name: " + greatestMatchingStudents.get(i).get(1) + "<br />" 
+                            + "Last Name: " + greatestMatchingStudents.get(i).get(2) + "<br />" 
+                            + "School: " + greatestMatchingStudents.get(i).get(3) + "<br />"
+                            + "Skill(s): " + greatestMatchingStudents.get(i).get(5) + "<br /><br />";
+
+            }
+
+            studentInfo += "</html>";
+
             return studentInfo;
 
         } catch (SQLException sqlException) {

@@ -78,7 +78,7 @@ public class Presentation extends JFrame {
     	} while (!dLayer.connect(jtfUser.getText(), jtfPass.getText()));
     	/*---------------- End Database Login Prompt ---------------------*/
 
-		System.out.println(dLayer.getStudentInfo("", "", "RIT", new ArrayList<String>(Arrays.asList("C++"))));
+		// System.out.println(dLayer.getStudentInfo("", "", "RIT", new ArrayList<String>(Arrays.asList("C++"))));
     	
     	// Set close operation, make JFrame visible, and fit window to component size
     	setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -92,34 +92,34 @@ public class Presentation extends JFrame {
      * 
      * @return JPanel Opened JPanel
      */
-    // public static JPanel getOpenedPanel() {
-    // 	return openedPanel;
-    // }
+    public static JPanel getOpenedPanel() {
+    	return openedPanel;
+    }
     
-    // /**
-    //  * Swaps the Currently Opened Panel for a New One.
-    //  * 
-    //  * @param newPanel New JPanel to add to CENTER in layout
-    //  */
-    // public static void setOpenedPanel(JPanel newPanel) {
-    // 	// If a JPanel has already been added, remove it
-    // 	if (openedPanel != null) {
-    // 		pLayer.remove(openedPanel);
-    // 	}
+    /**
+     * Swaps the Currently Opened Panel for a New One.
+     * 
+     * @param newPanel New JPanel to add to CENTER in layout
+     */
+    public static void setOpenedPanel(JPanel newPanel) {
+    	// If a JPanel has already been added, remove it
+    	if (openedPanel != null) {
+    		pLayer.remove(openedPanel);
+    	}
     	
-    // 	// Add the JPanel to the layout and update the variable
-    // 	pLayer.add(newPanel, BorderLayout.CENTER);
-    // 	openedPanel = newPanel;
-    // 	pLayer.pack();
-    // }
+    	// Add the JPanel to the layout and update the variable
+    	pLayer.add(newPanel, BorderLayout.CENTER);
+    	openedPanel = newPanel;
+    	pLayer.pack();
+    }
     
-    // public static Presentation getPLayer() {
-    // 	return pLayer;
-    // }
+    public static Presentation getPLayer() {
+    	return pLayer;
+    }
     
-    // public static DataLayer getDLayer() {
-    // 	return dLayer;
-    // }
+    public static DataLayer getDLayer() {
+    	return dLayer;
+    }
     
     /**
      * Initializes the Presentation Layer.
@@ -130,7 +130,7 @@ public class Presentation extends JFrame {
     	dLayer = new DataLayer();
     	pLayer = new Presentation();
     	// Open the faculty login panel
-    	// setOpenedPanel(new loginUser());
+    	setOpenedPanel(new loginUser());
     }
 }
 
@@ -142,69 +142,69 @@ public class Presentation extends JFrame {
  * @author Evan Hiltzik
  * @author Nicholas Johnson
  */
-// class loginUser extends JPanel {
+class loginUser extends JPanel {
 	
-// 	private static final long serialVersionUID = 3814139183564072897L;
+	private static final long serialVersionUID = 3814139183564072897L;
 	
-// 	/**
-// 	 * Initializes a loginUser JPanel.
-// 	 */
-// 	public loginUser() {
-// 		// Instantiate Swing components
-// 		JPanel jpLogin = new JPanel();
-// 		JPanel jpUsername = new JPanel();
-// 		JPanel jpPass = new JPanel();
-// 		JPanel jpButtons = new JPanel();
-// 		JTextField jtfUsername = new JTextField(20);
-// 		JTextField jtfPass = new JPasswordField(20);
-// 		JButton jbGuest = new JButton("Continue as Guest");
-// 		JButton jbLogin = new JButton("Login");
+	/**
+	 * Initializes a loginUser JPanel.
+	 */
+	public loginUser() {
+		// Instantiate Swing components
+		JPanel jpLogin = new JPanel();
+		JPanel jpUsername = new JPanel();
+		JPanel jpPass = new JPanel();
+		JPanel jpButtons = new JPanel();
+		JTextField jtfUsername = new JTextField(20);
+		JTextField jtfPass = new JPasswordField(20);
+		JButton jbGuest = new JButton("Continue as Guest");
+		JButton jbLogin = new JButton("Login");
 		
-// 		// Set layouts of respective JPanels
-// 		setLayout(new BorderLayout());
-// 		jpLogin.setLayout(new BoxLayout(jpLogin, BoxLayout.Y_AXIS));
+		// Set layouts of respective JPanels
+		setLayout(new BorderLayout());
+		jpLogin.setLayout(new BoxLayout(jpLogin, BoxLayout.Y_AXIS));
 		
-// 		/*
-// 		 * If the user decides to continue as a guest open the query panel
-// 		 * because non-faculty users may only query
-// 		 */
-// 		jbGuest.addActionListener(new ActionListener() {
-// 			@Override
-// 			public void actionPerformed(ActionEvent e) {
-// 				Presentation.setOpenedPanel(new queryPanel());
-// 			}
-// 		});
+		/*
+		 * If the user decides to continue as a guest open the query panel
+		 * because non-faculty users may only query
+		 */
+		jbGuest.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Presentation.setOpenedPanel(new queryPanel());
+			}
+		});
 		
-// 		// Otherwise login as a faculty user
-// 		jbLogin.addActionListener(new ActionListener() {
-// 			@Override
-// 			public void actionPerformed(ActionEvent e) {
-// 				// For future use
-// 			}
-// 		});
+		// Otherwise login as a faculty user
+		jbLogin.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// For future use
+			}
+		});
 		
-// 		// Add components to username panel
-// 		jpUsername.add(new JLabel("Username: "));
-// 		jpUsername.add(jtfUsername);
+		// Add components to username panel
+		jpUsername.add(new JLabel("Username: "));
+		jpUsername.add(jtfUsername);
 		
-// 		// Add components to password panel
-// 		jpPass.add(new JLabel("Password: "));
-// 		jpPass.add(jtfPass);
+		// Add components to password panel
+		jpPass.add(new JLabel("Password: "));
+		jpPass.add(jtfPass);
 		
-// 		// Add components to button panel
-// 		jpButtons.add(jbGuest);
-// 		jpButtons.add(jbLogin);
+		// Add components to button panel
+		jpButtons.add(jbGuest);
+		jpButtons.add(jbLogin);
 		
-// 		// Add panels to login form
-// 		jpLogin.add(jpUsername);
-// 		jpLogin.add(jpPass);
-// 		jpLogin.add(jpButtons);
+		// Add panels to login form
+		jpLogin.add(jpUsername);
+		jpLogin.add(jpPass);
+		jpLogin.add(jpButtons);
 		
-// 		// Add heading and login form
-// 		add(new JLabel("Login as Faculty"), BorderLayout.NORTH);
-// 		add(jpLogin);
-// 	}
-// }
+		// Add heading and login form
+		add(new JLabel("Login as Faculty"), BorderLayout.NORTH);
+		add(jpLogin);
+	}
+}
 
 // /**
 //  * Accepts Data to Search for.
@@ -214,186 +214,185 @@ public class Presentation extends JFrame {
 //  * @author Evan Hiltzik
 //  * @author Nicholas Johnson
 //  */
-// class queryPanel extends JPanel {
+class queryPanel extends JPanel {
 	
-// 	private static final long serialVersionUID = 5635321639571267414L;
+	private static final long serialVersionUID = 5635321639571267414L;
 	
-// 	private final String FAC = "Faculty";
-// 	private final String STUD = "Student";
+	private final String FAC = "Faculty";
+	private final String STUD = "Student";
 	
-// 	private JPanel jpQueryFields;
-// 	private String openedFields;
+	private JPanel jpQueryFields;
+	private String openedFields;
 	
-// 	public queryPanel() {
-// 		// Instantiate components
-// 		JComboBox<String> jcbFacStud = new JComboBox<String>();
-// 		jpQueryFields = new JPanel();
+	public queryPanel() {
+		// Instantiate components
+		JComboBox<String> jcbFacStud = new JComboBox<String>();
+		jpQueryFields = new JPanel();
 		
-// 		// Set layout and add a border around the form
-// 		setLayout(new BorderLayout());
-// 		setBorder(BorderFactory.createLoweredBevelBorder());
+		// Set layout and add a border around the form
+		setLayout(new BorderLayout());
+		setBorder(BorderFactory.createLoweredBevelBorder());
 		
-// 		// Add items to dropdown box
-// 		jcbFacStud.addItem(FAC);
-// 		jcbFacStud.addItem(STUD);
+		// Add items to dropdown box
+		jcbFacStud.addItem(FAC);
+		jcbFacStud.addItem(STUD);
 		
-// 		// Default to faculty
-// 		jcbFacStud.setSelectedItem(FAC);
+		// Default to faculty
+		jcbFacStud.setSelectedItem(FAC);
 		
-// 		// Create faculty form
-// 		queryFAC();
+		// Create faculty form
+		queryFAC();
 		
-// 		jcbFacStud.addActionListener(new ActionListener() {
-// 			@Override
-// 			public void actionPerformed(ActionEvent e) {
-// 				/*
-// 				 * Might not need the portion of the if statement to check which field is stored in openedFields
-// 				 * depending on whether or not this event triggers if the choice is unchanged
-// 				 */
-// 				if (jcbFacStud.getSelectedItem().equals(FAC) && !openedFields.equals(FAC)) {
-// 					queryFAC();
-// 				}
-// 				if (jcbFacStud.getSelectedItem().equals(STUD) && !openedFields.equals(STUD)) {
-// 					querySTUD();
-// 				}
-// 			}
-// 		});
+		jcbFacStud.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				/*
+				 * Might not need the portion of the if statement to check which field is stored in openedFields
+				 * depending on whether or not this event triggers if the choice is unchanged
+				 */
+				if (jcbFacStud.getSelectedItem().equals(FAC) && !openedFields.equals(FAC)) {
+					queryFAC();
+				}
+				if (jcbFacStud.getSelectedItem().equals(STUD) && !openedFields.equals(STUD)) {
+					querySTUD();
+				}
+			}
+		});
 		
-// 		add(jcbFacStud, BorderLayout.NORTH);
-// 	}
+		add(jcbFacStud, BorderLayout.NORTH);
+	}
 	
-// 	private void queryFAC() {
-// 		// Set tracker variable and remove existing panel
-// 		openedFields = FAC;
-// 		remove(jpQueryFields);
+	private void queryFAC() {
+		// Set tracker variable and remove existing panel
+		openedFields = FAC;
+		remove(jpQueryFields);
 		
-// 		jpQueryFields = new JPanel();
+		jpQueryFields = new JPanel();
 		
-// 		// Instantiate components
-// 		JPanel jpFName = new JPanel();
-// 		JPanel jpLName = new JPanel();
-// 		JPanel jpSchool = new JPanel();
-// 		JPanel jpAbstract = new JPanel();
-// 		JPanel jpKeywords = new JPanel();
-// 		JTextField jtfFName = new JTextField(20);
-// 		JTextField jtfLName = new JTextField(20);
-// 		JTextField jtfSchool = new JTextField(20);
-// 		JTextField jtfKeywords = new JTextField(20);
-// 		JTextArea jtaAbstract = new JTextArea(20, 25);
-// 		JButton jbSubmit = new JButton("Submit");
+		// Instantiate components
+		JPanel jpFName = new JPanel();
+		JPanel jpLName = new JPanel();
+		JPanel jpSchool = new JPanel();
+		JPanel jpAbstract = new JPanel();
+		JPanel jpKeywords = new JPanel();
+		JTextField jtfFName = new JTextField(20);
+		JTextField jtfLName = new JTextField(20);
+		JTextField jtfSchool = new JTextField(20);
+		JTextField jtfKeywords = new JTextField(20);
+		JTextArea jtaAbstract = new JTextArea(20, 25);
+		JButton jbSubmit = new JButton("Submit");
 		
-// 		// Set layout to be vertical
-// 		jpQueryFields.setLayout(new BoxLayout(jpQueryFields, BoxLayout.Y_AXIS));
+		// Set layout to be vertical
+		jpQueryFields.setLayout(new BoxLayout(jpQueryFields, BoxLayout.Y_AXIS));
 		
-// 		// Add components to respective panels
-// 		jpFName.add(new JLabel("First Name: "));
-// 		jpFName.add(jtfFName);
-// 		jpLName.add(new JLabel("Last Name: "));
-// 		jpLName.add(jtfLName);
-// 		jpSchool.add(new JLabel("School: "));
-// 		jpSchool.add(jtfSchool);
-// 		jpAbstract.add(new JLabel("Abstract: "));
-// 		jpAbstract.add(jtaAbstract);
-// 		jpKeywords.add(new JLabel("Keywords: "));
-// 		jpKeywords.add(jtfKeywords);
+		// Add components to respective panels
+		jpFName.add(new JLabel("First Name: "));
+		jpFName.add(jtfFName);
+		jpLName.add(new JLabel("Last Name: "));
+		jpLName.add(jtfLName);
+		jpSchool.add(new JLabel("School: "));
+		jpSchool.add(jtfSchool);
+		jpAbstract.add(new JLabel("Abstract: "));
+		jpAbstract.add(jtaAbstract);
+		jpKeywords.add(new JLabel("Keywords: "));
+		jpKeywords.add(jtfKeywords);
 		
-// 		// Add components to form
-// 		jpQueryFields.add(jpFName);
-// 		jpQueryFields.add(jpLName);
-// 		jpQueryFields.add(jpSchool);
-// 		jpQueryFields.add(jpAbstract);
-// 		jpQueryFields.add(jpKeywords);
-// 		jpQueryFields.add(jbSubmit);
+		// Add components to form
+		jpQueryFields.add(jpFName);
+		jpQueryFields.add(jpLName);
+		jpQueryFields.add(jpSchool);
+		jpQueryFields.add(jpAbstract);
+		jpQueryFields.add(jpKeywords);
+		jpQueryFields.add(jbSubmit);
 		
-// 		jbSubmit.addActionListener(new ActionListener() {
-// 			@Override
-// 			public void actionPerformed(ActionEvent e) {
-// 				String fName = jtfFName.getText();
-// 				String lName = jtfLName.getText();
-// 				String school = jtfSchool.getText();
-// 				String fAbstract = jtaAbstract.getText();
-// 				@SuppressWarnings("unused")
-// 				ArrayList<String> keywords = parseCommaList(jtfKeywords.getText());
+		jbSubmit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String fName = jtfFName.getText();
+				String lName = jtfLName.getText();
+				String school = jtfSchool.getText();
+				String fAbstract = jtaAbstract.getText();
+				@SuppressWarnings("unused")
+				ArrayList<String> keywords = parseCommaList(jtfKeywords.getText());
 				
-// 				// Get results from data layer
-// 				String res = Presentation.getDLayer().getFacultyInfo(fName, lName, school, fAbstract);
-// 				/*
-// 				 * For use once keywords are added to method:
-// 				 * Presentation.getDLayer().getFacultyInfo(fName, lName, school, fAbstract, keywords);
-// 				 */
+				// Get results from data layer. *** THIS IS THE OLD USAGE ***
+				// String res = Presentation.getDLayer().getFacultyInfo(fName, lName, school, fAbstract);
+
+				String res = Presentation.getDLayer().getFacultyInfo(fName, lName, school, fAbstract, keywords);
 				
-// 				Presentation.setOpenedPanel(new queryResults(res));
-// 			}
-// 		});
+				System.out.println(res);
+				Presentation.setOpenedPanel(new queryResults(res));
+			}
+		});
 		
-// 		add(jpQueryFields, BorderLayout.CENTER);
-// 		Presentation.getPLayer().revalidate();
-// 		Presentation.getPLayer().repaint();
-// 		Presentation.getPLayer().pack();
-// 	}
+		add(jpQueryFields, BorderLayout.CENTER);
+		Presentation.getPLayer().revalidate();
+		Presentation.getPLayer().repaint();
+		Presentation.getPLayer().pack();
+	}
 	
 // 	/**
 // 	 * Switch the Query Panel to be for Students.
 // 	 */
-// 	private void querySTUD() {
-// 		// Set tracker variable and remove the existing panel
-// 		openedFields = STUD;
-// 		remove(jpQueryFields);
+	private void querySTUD() {
+		// Set tracker variable and remove the existing panel
+		openedFields = STUD;
+		remove(jpQueryFields);
 		
-// 		jpQueryFields = new JPanel();
+		jpQueryFields = new JPanel();
 		
-// 		// Instantiate components
-// 		JPanel jpFName = new JPanel();
-// 		JPanel jpLName = new JPanel();
-// 		JPanel jpSchool = new JPanel();
-// 		JPanel jpSkills = new JPanel();
-// 		JTextField jtfFName = new JTextField(20);
-// 		JTextField jtfLName = new JTextField(20);
-// 		JTextField jtfSchool = new JTextField(20);
-// 		JTextField jtfSkills = new JTextField(20);
-// 		JButton jbSubmit = new JButton("Submit");
+		// Instantiate components
+		JPanel jpFName = new JPanel();
+		JPanel jpLName = new JPanel();
+		JPanel jpSchool = new JPanel();
+		JPanel jpSkills = new JPanel();
+		JTextField jtfFName = new JTextField(20);
+		JTextField jtfLName = new JTextField(20);
+		JTextField jtfSchool = new JTextField(20);
+		JTextField jtfSkills = new JTextField(20);
+		JButton jbSubmit = new JButton("Submit");
 		
-// 		// Set the layout of the form to be vertical
-// 		jpQueryFields.setLayout(new BoxLayout(jpQueryFields, BoxLayout.Y_AXIS));
+		// Set the layout of the form to be vertical
+		jpQueryFields.setLayout(new BoxLayout(jpQueryFields, BoxLayout.Y_AXIS));
 		
-// 		// Add components to respective panel
-// 		jpFName.add(new JLabel("First Name: "));
-// 		jpFName.add(jtfFName);
-// 		jpLName.add(new JLabel("Last Name: "));
-// 		jpLName.add(jtfLName);
-// 		jpSchool.add(new JLabel("School: "));
-// 		jpSchool.add(jtfSchool);
-// 		jpSkills.add(new JLabel("Skills: "));
-// 		jpSkills.add(jtfSkills);
+		// Add components to respective panel
+		jpFName.add(new JLabel("First Name: "));
+		jpFName.add(jtfFName);
+		jpLName.add(new JLabel("Last Name: "));
+		jpLName.add(jtfLName);
+		jpSchool.add(new JLabel("School: "));
+		jpSchool.add(jtfSchool);
+		jpSkills.add(new JLabel("Skills: "));
+		jpSkills.add(jtfSkills);
 		
-// 		// Add components to form
-// 		jpQueryFields.add(jpFName);
-// 		jpQueryFields.add(jpLName);
-// 		jpQueryFields.add(jpSchool);
-// 		jpQueryFields.add(jpSkills);
-// 		jpQueryFields.add(jbSubmit);
+		// Add components to form
+		jpQueryFields.add(jpFName);
+		jpQueryFields.add(jpLName);
+		jpQueryFields.add(jpSchool);
+		jpQueryFields.add(jpSkills);
+		jpQueryFields.add(jbSubmit);
 		
-// 		jbSubmit.addActionListener(new ActionListener() {
-// 			@SuppressWarnings("unused")
-// 			@Override
-// 			public void actionPerformed(ActionEvent e) {
-// 				String fName = jtfFName.getText();
-// 				String lName = jtfLName.getText();
-// 				String school = jtfSchool.getText();
-// 				ArrayList<String> skills = parseCommaList(jtfSkills.getText());
+		jbSubmit.addActionListener(new ActionListener() {
+			@SuppressWarnings("unused")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String fName = jtfFName.getText();
+				String lName = jtfLName.getText();
+				String school = jtfSchool.getText();
+				ArrayList<String> skills = parseCommaList(jtfSkills.getText());
 				
-// 				// Skills to be added later
-// 				String res = Presentation.getDLayer().getStudentInfo(fName, lName, school);
+				// Skills to be added later
+				String res = Presentation.getDLayer().getStudentInfo(fName, lName, school, skills);
 				
-// 				Presentation.setOpenedPanel(new queryResults(res));
-// 			}
-// 		});
+				Presentation.setOpenedPanel(new queryResults(res));
+			}
+		});
 		
-// 		add(jpQueryFields, BorderLayout.CENTER);
-// 		Presentation.getPLayer().revalidate();
-// 		Presentation.getPLayer().repaint();
-// 		Presentation.getPLayer().pack();
-// 	}
+		add(jpQueryFields, BorderLayout.CENTER);
+		Presentation.getPLayer().revalidate();
+		Presentation.getPLayer().repaint();
+		Presentation.getPLayer().pack();
+	}
 	
 // 	/**
 // 	 * Convert Comma Separated List Input to an ArrayList.
@@ -401,19 +400,19 @@ public class Presentation extends JFrame {
 // 	 * @param keywords String keywords to convert to an ArrayList
 // 	 * @return ArrayList<String> all input keywords as an ArrayList
 // 	 */
-// 	private ArrayList<String> parseCommaList(String ls) {
-// 		ArrayList<String> ret = new ArrayList<String>();
-// 		// Separate comma-separated keywords
-// 		String[] retArr = ls.split(",");
+	private ArrayList<String> parseCommaList(String ls) {
+		ArrayList<String> ret = new ArrayList<String>();
+		// Separate comma-separated keywords
+		String[] retArr = ls.split(",");
 		
-// 		// Trim whitespace from each keyword and add to return ArrayList
-// 		for (String i: retArr) {
-// 			ret.add(i.trim());
-// 		}
+		// Trim whitespace from each keyword and add to return ArrayList
+		for (String i: retArr) {
+			ret.add(i.trim());
+		}
 		
-// 		return ret;
-// 	}
-// }
+		return ret;
+	}
+}
 
 // /**
 //  * Accepts Data to Insert for a Faculty Member.
@@ -423,11 +422,11 @@ public class Presentation extends JFrame {
 //  * @author Evan Hiltzik
 //  * @author Nicholas Johnson
 //  */
-// class insertPanel extends JPanel {
+class insertPanel extends JPanel {
 
-// 	private static final long serialVersionUID = -1597640241890801649L;
+	private static final long serialVersionUID = -1597640241890801649L;
 	
-// }
+}
 
 // /**
 //  * Shows Results of a Search.
@@ -437,28 +436,28 @@ public class Presentation extends JFrame {
 //  * @author Evan Hiltzik
 //  * @author Nicholas Johnson
 //  */
-// class queryResults extends JPanel {
+class queryResults extends JPanel {
 	
-// 	private static final long serialVersionUID = -5998403958243395034L;
+	private static final long serialVersionUID = -5998403958243395034L;
 	
-// 	/**
-// 	 * Initialize Result Panel.
-// 	 * 
-// 	 * @param resContent String Result content to be displayed
-// 	 */
-// 	public queryResults(String resContent) {
-// 		JButton jbBack = new JButton("Back");
+	/**
+	 * Initialize Result Panel.
+	 * 
+	 * @param resContent String Result content to be displayed
+	 */
+	public queryResults(String resContent) {
+		JButton jbBack = new JButton("Back");
 		
-// 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-// 		jbBack.addActionListener(new ActionListener() {
-// 			@Override
-// 			public void actionPerformed(ActionEvent e) {
-// 				Presentation.setOpenedPanel(new queryPanel());
-// 			}
-// 		});
+		jbBack.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Presentation.setOpenedPanel(new queryPanel());
+			}
+		});
 		
-// 		add(new JLabel(resContent));
-// 		add(jbBack);
-// 	}
-// }
+		add(new JLabel(resContent));
+		add(jbBack);
+	}
+}
