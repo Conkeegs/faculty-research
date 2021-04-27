@@ -328,8 +328,9 @@ class queryPanel extends JPanel {
 		JTextArea jtaAbstract = new JTextArea(20, 25);
 		JButton jbSubmit = new JButton("Submit");
 		
-		// Set layout to be vertical
+		// general setup of components
 		jpQueryFields.setLayout(new BoxLayout(jpQueryFields, BoxLayout.Y_AXIS));
+		jtaAbstract.setLineWrap(true);
 		
 		// Add components to respective panels
 		jpFName.add(new JLabel("First Name: "));
