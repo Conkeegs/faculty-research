@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.awt.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -16,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JScrollPane;
 
 /**
  * This is the frontend code for the GUI part of the faculty research database. This will use the
@@ -326,11 +328,13 @@ class queryPanel extends JPanel {
 		JTextField jtfSchool = new JTextField(20);
 		JTextField jtfKeywords = new JTextField(20);
 		JTextArea jtaAbstract = new JTextArea(20, 25);
+		JScrollPane jtaAbstractScroll = new JScrollPane(jtaAbstract, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		JButton jbSubmit = new JButton("Submit");
 		
 		// general setup of components
 		jpQueryFields.setLayout(new BoxLayout(jpQueryFields, BoxLayout.Y_AXIS));
 		jtaAbstract.setLineWrap(true);
+		jtaAbstractScroll.setSize(new Dimension(1000, 1000));
 		
 		// Add components to respective panels
 		jpFName.add(new JLabel("First Name: "));
@@ -348,7 +352,7 @@ class queryPanel extends JPanel {
 		jpQueryFields.add(jpFName);
 		jpQueryFields.add(jpLName);
 		jpQueryFields.add(jpSchool);
-		jpQueryFields.add(jpAbstract);
+		jpQueryFields.add(jtaAbstractScroll);
 		jpQueryFields.add(jpKeywords);
 		jpQueryFields.add(jbSubmit);
 		
