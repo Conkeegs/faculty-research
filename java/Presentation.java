@@ -415,6 +415,7 @@ class queryPanel extends JPanel {
 		jpQueryFields.add(jbSubmit);
 		
 		jbSubmit.addActionListener(new ActionListener() {
+      
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String fName = jtfFName.getText();
