@@ -3,7 +3,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Scanner;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -38,8 +38,10 @@ public class Presentation extends JFrame {
 
     /**
      * Constructor for Presentation Layer.
+     * 
+     * @param mode int 0 for normal mode, 1 for faculty login adding mode
      */
-    public Presentation() {
+    public Presentation(int mode) {
     	// Set window title
     	super("ISTE-330 Group Project - Faculty Research Database");
     	
@@ -80,11 +82,50 @@ public class Presentation extends JFrame {
 
 		// System.out.println(dLayer.getStudentInfo("", "", "RIT", new ArrayList<String>(Arrays.asList("C++"))));
     	
-    	// Set close operation, make JFrame visible, and fit window to component size
-    	setDefaultCloseOperation(EXIT_ON_CLOSE);
-    	setVisible(true);
-    	pack();
-		setLocationRelativeTo(null);
+        if (mode == 0) {
+            // Set close operation, make JFrame visible, and fit window to component size
+            setDefaultCloseOperation(EXIT_ON_CLOSE);
+            setVisible(true);
+            pack();
+
+            // Center window on screen
+            setLocationRelativeTo(null);
+        } else {
+            int id;
+            Scanner sc = new Scanner(System.in);
+
+            do {
+                System.out.println("------------------------------------------------------------\n"
+                     + "Add Faculty Login Info\n"
+                     + "------------------------------------------------------------\n");
+
+                System.out.print("Enter Faculty ID to add a login to (-1 to exit): ");
+                id = sc.nextInt();
+                sc.nextLine();
+
+				if (id == -1) {
+					break;
+				}
+
+                System.out.print("Enter Username for Faculty with ID " + id + ": ");
+                String uname = sc.nextLine();
+
+                String pw;
+                // If the console object is null on the system running this, the password cannot be obscured
+                if (System.console() != null) {
+                    pw = new String(System.console().readPassword("Enter new password for " + uname + ": "));
+                } else {
+                    System.out.print("Enter new password for " + uname + ": ");
+                    pw = sc.nextLine();
+                }
+
+                dLayer.addFacLogin(id, uname, pw);
+            } while (id != -1);
+
+            sc.close();
+
+            System.exit(0);
+        }
     }
 
     /**
@@ -128,9 +169,14 @@ public class Presentation extends JFrame {
      */
     public static void main(String[] args) {
     	dLayer = new DataLayer();
-    	pLayer = new Presentation();
-    	// Open the faculty login panel
-    	setOpenedPanel(new loginUser());
+
+        if (args.length != 0 && args[0].equals("1")) {
+            pLayer = new Presentation(1);
+        } else {
+            pLayer = new Presentation(0);
+            // Open the faculty login panel
+            setOpenedPanel(new loginUser());
+        }
     }
 }
 
@@ -206,14 +252,14 @@ class loginUser extends JPanel {
 	}
 }
 
-// /**
-//  * Accepts Data to Search for.
-//  * 
-//  * @author Conor Keegan
-//  * @author Eli Hopkins
-//  * @author Evan Hiltzik
-//  * @author Nicholas Johnson
-//  */
+/**
+ * Accepts Data to Search for.
+ * 
+ * @author Conor Keegan
+ * @author Eli Hopkins
+ * @author Evan Hiltzik
+ * @author Nicholas Johnson
+ */
 class queryPanel extends JPanel {
 	
 	private static final long serialVersionUID = 5635321639571267414L;
@@ -312,15 +358,11 @@ class queryPanel extends JPanel {
 				String lName = jtfLName.getText();
 				String school = jtfSchool.getText();
 				String fAbstract = jtaAbstract.getText();
-				@SuppressWarnings("unused")
 				ArrayList<String> keywords = parseCommaList(jtfKeywords.getText());
 				
-				// Get results from data layer. *** THIS IS THE OLD USAGE ***
-				// String res = Presentation.getDLayer().getFacultyInfo(fName, lName, school, fAbstract);
-
+				// Get results from data layer
 				String res = Presentation.getDLayer().getFacultyInfo(fName, lName, school, fAbstract, keywords);
 				
-				System.out.println(res);
 				Presentation.setOpenedPanel(new queryResults(res));
 			}
 		});
@@ -331,9 +373,9 @@ class queryPanel extends JPanel {
 		Presentation.getPLayer().pack();
 	}
 	
-// 	/**
-// 	 * Switch the Query Panel to be for Students.
-// 	 */
+	/**
+	 * Switch the Query Panel to be for Students.
+	 */
 	private void querySTUD() {
 		// Set tracker variable and remove the existing panel
 		openedFields = STUD;
@@ -373,7 +415,7 @@ class queryPanel extends JPanel {
 		jpQueryFields.add(jbSubmit);
 		
 		jbSubmit.addActionListener(new ActionListener() {
-			@SuppressWarnings("unused")
+      
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String fName = jtfFName.getText();
@@ -381,7 +423,6 @@ class queryPanel extends JPanel {
 				String school = jtfSchool.getText();
 				ArrayList<String> skills = parseCommaList(jtfSkills.getText());
 				
-				// Skills to be added later
 				String res = Presentation.getDLayer().getStudentInfo(fName, lName, school, skills);
 				
 				Presentation.setOpenedPanel(new queryResults(res));
@@ -394,12 +435,12 @@ class queryPanel extends JPanel {
 		Presentation.getPLayer().pack();
 	}
 	
-// 	/**
-// 	 * Convert Comma Separated List Input to an ArrayList.
-// 	 * 
-// 	 * @param keywords String keywords to convert to an ArrayList
-// 	 * @return ArrayList<String> all input keywords as an ArrayList
-// 	 */
+	/**
+	 * Convert Comma Separated List Input to an ArrayList.
+	 * 
+	 * @param keywords String keywords to convert to an ArrayList
+	 * @return ArrayList<String> all input keywords as an ArrayList
+	 */
 	private ArrayList<String> parseCommaList(String ls) {
 		ArrayList<String> ret = new ArrayList<String>();
 		// Separate comma-separated keywords
@@ -414,28 +455,28 @@ class queryPanel extends JPanel {
 	}
 }
 
-// /**
-//  * Accepts Data to Insert for a Faculty Member.
-//  * 
-//  * @author Conor Keegan
-//  * @author Eli Hopkins
-//  * @author Evan Hiltzik
-//  * @author Nicholas Johnson
-//  */
+/**
+ * Accepts Data to Insert for a Faculty Member.
+ * 
+ * @author Conor Keegan
+ * @author Eli Hopkins
+ * @author Evan Hiltzik
+ * @author Nicholas Johnson
+ */
 class insertPanel extends JPanel {
 
 	private static final long serialVersionUID = -1597640241890801649L;
 	
 }
 
-// /**
-//  * Shows Results of a Search.
-//  * 
-//  * @author Conor Keegan
-//  * @author Eli Hopkins
-//  * @author Evan Hiltzik
-//  * @author Nicholas Johnson
-//  */
+/**
+ * Shows Results of a Search.
+ * 
+ * @author Conor Keegan
+ * @author Eli Hopkins
+ * @author Evan Hiltzik
+ * @author Nicholas Johnson
+ */
 class queryResults extends JPanel {
 	
 	private static final long serialVersionUID = -5998403958243395034L;
