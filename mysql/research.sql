@@ -18,6 +18,9 @@ CREATE TABLE faculty (
     firstName VARCHAR(50),
     lastName VARCHAR(50),
     school VARCHAR(100),
+    username VARCHAR(50),
+    pwhash VARCHAR(500),
+    salt VARCHAR(500),
     facultyAbstract VARCHAR (500),
     CONSTRAINT faculty_pk PRIMARY KEY (facultyID)
 
