@@ -559,6 +559,87 @@ public class DataLayer {
         }
     }
 
+    public boolean updateFac(int facultyID, String fName, String lName, String school, String facAbstract, ArrayList<String> keywords) {
+        try {
+            conn.setAutoCommit(false);
+
+            if (fName != "") {
+                PreparedStatement pStatement = conn.prepareStatement("UPDATE faculty SET firstName=? WHERE facultyID=?;");
+
+                pStatement.setString(1, fName);
+                pStatement.setInt(2, facultyID);
+
+                pStatement.executeUpdate();
+
+                pStatement.close();
+            }
+
+            if (lName != "") {
+                PreparedStatement pStatement = conn.prepareStatement("UPDATE faculty SET lastName=? WHERE facultyID=?;");
+
+                pStatement.setString(1, lName);
+                pStatement.setInt(2, facultyID);
+
+                pStatement.executeUpdate();
+
+                pStatement.close();
+            }
+
+            if (school != "") {
+                PreparedStatement pStatement = conn.prepareStatement("UPDATE faculty SET school=? WHERE facultyID=?;");
+
+                pStatement.setString(1, school);
+                pStatement.setInt(2, facultyID);
+
+                pStatement.executeUpdate();
+
+                pStatement.close();
+            }
+
+            if (facAbstract != "") {
+                PreparedStatement pStatement = conn.prepareStatement("UPDATE faculty SET facultyAbstract=? WHERE facultyID=?;");
+
+                pStatement.setString(1, facAbstract);
+                pStatement.setInt(2, facultyID);
+
+                pStatement.executeUpdate();
+
+                pStatement.close();
+            }
+
+            if (keywords.size() != 0) {
+                for (String i: keywords) {
+                    PreparedStatement pStatement = conn.prepareStatement("INSERT INTO facultyKeywords VALUES (?, ?);");
+
+                    pStatement.setInt(1, facultyID);
+                    pStatement.setString(2, i);
+
+                    pStatement.executeUpdate();
+
+                    pStatement.close();
+                }
+            }
+
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            return false;
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return true;
+    }
+
     public boolean addFacLogin(int facultyID, String uname, String pass) {
         String[] pwHashInfo = hashPass(pass);
 
