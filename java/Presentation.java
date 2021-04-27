@@ -483,7 +483,82 @@ class insertPanel extends JPanel {
 	private static final long serialVersionUID = -1597640241890801649L;
 	
 	public insertPanel() {
+		// Instantiate components
+		JPanel jpContents = new JPanel();
+		JPanel jpFName = new JPanel();
+		JPanel jpLName = new JPanel();
+		JPanel jpSchool = new JPanel();
+		JPanel jpAbstract = new JPanel();
+		JPanel jpKeywords = new JPanel();
+		JTextField jtfFName = new JTextField(20);
+		JTextField jtfLName = new JTextField(20);
+		JTextField jtfSchool = new JTextField(20);
+		JTextField jtfKeywords = new JTextField(20);
+		JTextArea jtaAbstract = new JTextArea(20, 25);
+		JButton jbSubmit = new JButton("Submit");
+		
+		// general setup of components
+		jpContents.setLayout(new BoxLayout(jpContents, BoxLayout.Y_AXIS));
+		jtaAbstract.setLineWrap(true);
+		
+		// Add components to respective panels
+		jpFName.add(new JLabel("First Name: "));
+		jpFName.add(jtfFName);
+		jpLName.add(new JLabel("Last Name: "));
+		jpLName.add(jtfLName);
+		jpSchool.add(new JLabel("School: "));
+		jpSchool.add(jtfSchool);
+		jpAbstract.add(new JLabel("Abstract: "));
+		jpAbstract.add(jtaAbstract);
+		jpKeywords.add(new JLabel("Keywords: "));
+		jpKeywords.add(jtfKeywords);
+		
+		// Add components to form
+		jpContents.add(jpFName);
+		jpContents.add(jpLName);
+		jpContents.add(jpSchool);
+		jpContents.add(jpAbstract);
+		jpContents.add(jpKeywords);
+		jpContents.add(jbSubmit);
+		
+		jbSubmit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String fName = jtfFName.getText();
+				String lName = jtfLName.getText();
+				String school = jtfSchool.getText();
+				String fAbstract = jtaAbstract.getText();
+				ArrayList<String> keywords = parseCommaList(jtfKeywords.getText());
+				
+				Presentation.getDLayer().updateFac(Presentation.loggedFacID, fName, lName, school, fAbstract, keywords);
 
+				jtfFName.setText("");
+				jtfLName.setText("");
+				jtfSchool.setText("");
+				jtaAbstract.setText("");
+				jtfKeywords.setText("");
+			}
+		});
+	}
+
+	// TODO: Refactor this to reuse code
+	/**
+	 * Convert Comma Separated List Input to an ArrayList.
+	 * 
+	 * @param keywords String keywords to convert to an ArrayList
+	 * @return ArrayList<String> all input keywords as an ArrayList
+	 */
+	private ArrayList<String> parseCommaList(String ls) {
+		ArrayList<String> ret = new ArrayList<String>();
+		// Separate comma-separated keywords
+		String[] retArr = ls.split(",");
+		
+		// Trim whitespace from each keyword and add to return ArrayList
+		for (String i: retArr) {
+			ret.add(i.trim());
+		}
+		
+		return ret;
 	}
 }
 
@@ -516,11 +591,17 @@ class facPanel extends JPanel {
 					contents.remove(openedPanel);
 					openedPanel = new insertPanel();
 					contents.add(openedPanel);
+					Presentation.getPLayer().revalidate();
+					Presentation.getPLayer().repaint();
+					Presentation.getPLayer().pack();
 				}
 				if (jcbInsQuery.getSelectedItem().equals(QUERY) && !(openedPanel instanceof queryPanel)) {
 					contents.remove(openedPanel);
 					openedPanel = new queryPanel();
 					contents.add(openedPanel);
+					Presentation.getPLayer().revalidate();
+					Presentation.getPLayer().repaint();
+					Presentation.getPLayer().pack();
 				}
 			}
 		});
