@@ -1,5 +1,11 @@
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.*;
 import java.util.*;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 /**
  * This class handles the backend code for fetching student and faculty
@@ -516,7 +522,46 @@ public class DataLayer {
             return "GENERAL ERROR";
 
         }
+    }
 
+    public static String[] hashPass(String plainPass) {
+        SecureRandom saltGen = new SecureRandom();
+
+        byte[] salt = new byte[32];
+        saltGen.nextBytes(salt);
+
+        PBEKeySpec kSpec = new PBEKeySpec(plainPass.toCharArray(), salt, 10000, 500);
+
+        try {
+            SecretKeyFactory keyFac = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+            byte[] hashedPass = keyFac.generateSecret(kSpec).getEncoded();
+
+            return new String[] {Base64.getEncoder().encodeToString(salt), Base64.getEncoder().encodeToString(hashedPass)};
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+        } finally {
+            kSpec.clearPassword();
+        }
+        return null;
+    }
+
+    public static boolean verifyPass(String salt, String hash, String plainPass) {
+        PBEKeySpec kSpec = new PBEKeySpec(plainPass.toCharArray(), Base64.getDecoder().decode(salt), 10000, 500);
+
+        try {
+            SecretKeyFactory keyFac = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+            byte[] hashedPass = keyFac.generateSecret(kSpec).getEncoded();
+
+            if (hashedPass == Base64.getDecoder().decode(hash)) {
+                return true;
+            }
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+        } finally {
+            kSpec.clearPassword();
+        }
+        
+        return false;
     }
 
     /**

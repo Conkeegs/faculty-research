@@ -353,7 +353,6 @@ class queryPanel extends JPanel {
 				String lName = jtfLName.getText();
 				String school = jtfSchool.getText();
 				String fAbstract = jtaAbstract.getText();
-				@SuppressWarnings("unused")
 				ArrayList<String> keywords = parseCommaList(jtfKeywords.getText());
 				
 				// Get results from data layer
@@ -411,7 +410,6 @@ class queryPanel extends JPanel {
 		jpQueryFields.add(jbSubmit);
 		
 		jbSubmit.addActionListener(new ActionListener() {
-			@SuppressWarnings("unused")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String fName = jtfFName.getText();
