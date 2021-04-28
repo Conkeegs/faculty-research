@@ -632,6 +632,16 @@ class queryResults extends JPanel {
 	 * @param resContent String Result content to be displayed
 	 */
 	public queryResults(String resContent) {
+
+		JPanel resContentContainer = new JPanel(new BorderLayout());
+		JTextArea resContentContainerText = new JTextArea(resContent);
+		resContentContainerText.setLineWrap(true);
+		resContentContainerText.setWrapStyleWord(true);
+		resContentContainer.setPreferredSize(new Dimension(500, 700));
+
+		JScrollPane resContentPane = new JScrollPane(resContentContainerText, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		resContentContainer.add(resContentPane);
+
 		JButton jbBack = new JButton("Back");
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -643,7 +653,8 @@ class queryResults extends JPanel {
 			}
 		});
 		
-		add(new JLabel(resContent));
+		add(resContentContainer);
 		add(jbBack);
+
 	}
 }

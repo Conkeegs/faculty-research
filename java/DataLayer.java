@@ -297,17 +297,14 @@ public class DataLayer {
 
             // populate the 'facultyInfo' String with all information from the
             // 'greatestMatchingFaculty' ArrayList
-            facultyInfo += "<html>";
             for (int i = 0; i < greatestMatchingFaculty.size(); i++) {
 
-                facultyInfo += "First Name: " + greatestMatchingFaculty.get(i).get(1) + "<br />" + "Last Name: "
-                        + greatestMatchingFaculty.get(i).get(2) + "<br />" + "School: "
-                        + greatestMatchingFaculty.get(i).get(3) + "<br />" + "Abstract: "
-                        + greatestMatchingFaculty.get(i).get(4) + "<br /><br />";
+                facultyInfo += "First Name: " + greatestMatchingFaculty.get(i).get(1) + "\n" + "Last Name: "
+                        + greatestMatchingFaculty.get(i).get(2) + "\n" + "School: "
+                        + greatestMatchingFaculty.get(i).get(3) + "\n" + "Abstract: "
+                        + greatestMatchingFaculty.get(i).get(4) + "\n\n";
 
             }
-
-            facultyInfo += "</html>";
 
             return facultyInfo;
 
@@ -532,17 +529,14 @@ public class DataLayer {
 
             // populate the 'studentInfo' String with all information from the
             // 'greatestMatchingStudents' ArrayList
-            studentInfo += "<html>";
             for (int i = 0; i < greatestMatchingStudents.size(); i++) {
 
-                studentInfo += "First Name: " + greatestMatchingStudents.get(i).get(1) + "<br />" 
-                            + "Last Name: " + greatestMatchingStudents.get(i).get(2) + "<br />" 
-                            + "School: " + greatestMatchingStudents.get(i).get(3) + "<br />"
-                            + "Skill(s): " + greatestMatchingStudents.get(i).get(5) + "<br /><br />";
+                studentInfo += "First Name: " + greatestMatchingStudents.get(i).get(1) + "\n" 
+                            + "Last Name: " + greatestMatchingStudents.get(i).get(2) + "\n" 
+                            + "School: " + greatestMatchingStudents.get(i).get(3) + "\n"
+                            + "Skill(s): " + greatestMatchingStudents.get(i).get(5) + "\n\n";
 
             }
-
-            studentInfo += "</html>";
 
             return studentInfo;
 
