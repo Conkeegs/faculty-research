@@ -124,10 +124,12 @@ public class DataLayer {
      * @param lastName        the first name of the faculty member (optional).
      * @param school          the first name of the faculty member (optional).
      * @param facultyAbstract the abstract of the faculty member (optional).
-     * @param keywords        the keywords that the user has specified for the searched faculty abstracts.
+     * @param keywords        the keywords that the user has specified for the
+     *                        searched faculty abstracts.
      * @return a string containing the information of all faculty members fetched.
      */
-    public String getFacultyInfo(String firstName, String lastName, String school, String facultyAbstract, ArrayList<String> keyWords) {
+    public String getFacultyInfo(String firstName, String lastName, String school, String facultyAbstract,
+            ArrayList<String> keyWords) {
 
         // instantiation of variables for use later in the method
         ArrayList<String> specifiedFacultyInfo = new ArrayList<String>();
@@ -200,7 +202,8 @@ public class DataLayer {
             }
 
             // if the 'keyWords' ArrayList parameter has values in it, add a 'matches' value
-            // to each facultyinfo ArrayList which tells how many 'keyword' matches there are.
+            // to each facultyinfo ArrayList which tells how many 'keyword' matches there
+            // are.
             if (keyWords.size() > 0) {
 
                 // populate the 'allFacultyKeywords' ArrayList with other ArrayLists holding all
@@ -209,7 +212,8 @@ public class DataLayer {
 
                     ArrayList<String> tempFacultyKeywords = new ArrayList<String>();
                     statement = conn.createStatement();
-                    resultSet = statement.executeQuery("SELECT keywords FROM facultyKeywords WHERE facultyID = " + allFacultyInfo.get(i).get(0));
+                    resultSet = statement.executeQuery(
+                            "SELECT keywords FROM facultyKeywords WHERE facultyID = " + allFacultyInfo.get(i).get(0));
 
                     while (resultSet.next()) {
 
@@ -238,7 +242,8 @@ public class DataLayer {
 
                                 if (allFacultyInfo.get(x).size() > 5) {
 
-                                    allFacultyInfo.get(x).set(5, (Integer.parseInt(allFacultyInfo.get(x).get(5)) + matches) + "");
+                                    allFacultyInfo.get(x).set(5,
+                                            (Integer.parseInt(allFacultyInfo.get(x).get(5)) + matches) + "");
 
                                 } else {
 
@@ -285,8 +290,10 @@ public class DataLayer {
 
             } else {
 
-                // this happens if the 'keyWords' parameter ArrayList is empty. Just populate the
-                // 'greatestMatchingFaculty' ArrayList with all ArrayLists from 'allFacultyInfo'.
+                // this happens if the 'keyWords' parameter ArrayList is empty. Just populate
+                // the
+                // 'greatestMatchingFaculty' ArrayList with all ArrayLists from
+                // 'allFacultyInfo'.
                 for (int i = 0; i < allFacultyInfo.size(); i++) {
 
                     greatestMatchingFaculty.add(allFacultyInfo.get(i));
@@ -410,7 +417,9 @@ public class DataLayer {
 
                     ArrayList<String> tempStudentSkills = new ArrayList<String>();
                     statement = conn.createStatement();
-                    resultSet = statement.executeQuery("SELECT skill FROM skills JOIN studentskill USING (skillid) WHERE studentid = " + allStudentInfo.get(i).get(0));
+                    resultSet = statement.executeQuery(
+                            "SELECT skill FROM skills JOIN studentskill USING (skillid) WHERE studentid = "
+                                    + allStudentInfo.get(i).get(0));
 
                     while (resultSet.next()) {
 
@@ -439,7 +448,8 @@ public class DataLayer {
 
                                 if (allStudentInfo.get(x).size() > 4) {
 
-                                    allStudentInfo.get(x).set(4, (Integer.parseInt(allStudentInfo.get(x).get(4)) + matches) + "");
+                                    allStudentInfo.get(x).set(4,
+                                            (Integer.parseInt(allStudentInfo.get(x).get(4)) + matches) + "");
 
                                 } else {
 
@@ -487,7 +497,8 @@ public class DataLayer {
             } else {
 
                 // this happens if the 'skills' parameter ArrayList is empty. Just populate the
-                // 'greatestMatchingStudents' ArrayList with all ArrayLists from 'allStudentInfo'.
+                // 'greatestMatchingStudents' ArrayList with all ArrayLists from
+                // 'allStudentInfo'.
                 for (int i = 0; i < allStudentInfo.size(); i++) {
 
                     greatestMatchingStudents.add(allStudentInfo.get(i));
@@ -496,15 +507,19 @@ public class DataLayer {
 
             }
 
-            // This loop takes all of the students in the 'greatestMatchingStudents' ArrayList and gets each
-            // of their specific skils. Then, these skills are appended to the end of each ArrayList inside
+            // This loop takes all of the students in the 'greatestMatchingStudents'
+            // ArrayList and gets each
+            // of their specific skils. Then, these skills are appended to the end of each
+            // ArrayList inside
             // of 'greatestMatchingStudents' so they can be output in the swing application.
             for (int i = 0; i < greatestMatchingStudents.size(); i++) {
 
                 String tempSkills = "";
 
                 statement = conn.createStatement();
-                resultSet = statement.executeQuery("SELECT skill FROM skills JOIN studentskill USING (skillid) WHERE studentid = " + greatestMatchingStudents.get(i).get(0));
+                resultSet = statement
+                        .executeQuery("SELECT skill FROM skills JOIN studentskill USING (skillid) WHERE studentid = "
+                                + greatestMatchingStudents.get(i).get(0));
 
                 while (resultSet.next()) {
 
@@ -514,8 +529,7 @@ public class DataLayer {
 
                         tempSkills += skill;
 
-                    }
-                    else {
+                    } else {
 
                         tempSkills += " | " + skill;
 
@@ -531,10 +545,10 @@ public class DataLayer {
             // 'greatestMatchingStudents' ArrayList
             for (int i = 0; i < greatestMatchingStudents.size(); i++) {
 
-                studentInfo += "First Name: " + greatestMatchingStudents.get(i).get(1) + "\n" 
-                            + "Last Name: " + greatestMatchingStudents.get(i).get(2) + "\n" 
-                            + "School: " + greatestMatchingStudents.get(i).get(3) + "\n"
-                            + "Skill(s): " + greatestMatchingStudents.get(i).get(5) + "\n\n";
+                studentInfo += "First Name: " + greatestMatchingStudents.get(i).get(1) + "\n" + "Last Name: "
+                        + greatestMatchingStudents.get(i).get(2) + "\n" + "School: "
+                        + greatestMatchingStudents.get(i).get(3) + "\n" + "Skill(s): "
+                        + greatestMatchingStudents.get(i).get(5) + "\n\n";
 
             }
 
@@ -553,12 +567,14 @@ public class DataLayer {
         }
     }
 
-    public boolean updateFac(int facultyID, String fName, String lName, String school, String facAbstract, ArrayList<String> keywords) {
+    public boolean updateFac(int facultyID, String fName, String lName, String school, String facAbstract,
+            ArrayList<String> keywords) {
         try {
             conn.setAutoCommit(false);
 
             if (!fName.equals("")) {
-                PreparedStatement pStatement = conn.prepareStatement("UPDATE faculty SET firstName=? WHERE facultyID=?;");
+                PreparedStatement pStatement = conn
+                        .prepareStatement("UPDATE faculty SET firstName=? WHERE facultyID=?;");
 
                 pStatement.setString(1, fName);
                 pStatement.setInt(2, facultyID);
@@ -569,7 +585,8 @@ public class DataLayer {
             }
 
             if (!lName.equals("")) {
-                PreparedStatement pStatement = conn.prepareStatement("UPDATE faculty SET lastName=? WHERE facultyID=?;");
+                PreparedStatement pStatement = conn
+                        .prepareStatement("UPDATE faculty SET lastName=? WHERE facultyID=?;");
 
                 pStatement.setString(1, lName);
                 pStatement.setInt(2, facultyID);
@@ -591,7 +608,8 @@ public class DataLayer {
             }
 
             if (!facAbstract.equals("")) {
-                PreparedStatement pStatement = conn.prepareStatement("UPDATE faculty SET facultyAbstract=? WHERE facultyID=?;");
+                PreparedStatement pStatement = conn
+                        .prepareStatement("UPDATE faculty SET facultyAbstract=? WHERE facultyID=?;");
 
                 pStatement.setString(1, facAbstract);
                 pStatement.setInt(2, facultyID);
@@ -602,12 +620,13 @@ public class DataLayer {
             }
 
             if (keywords.size() != 0) {
-                for (String i: keywords) {
+                for (String i : keywords) {
                     if (i.equals("")) {
                         break;
                     }
 
-                    PreparedStatement pStatement = conn.prepareStatement("INSERT INTO facultyKeywords (facultyID, keywords) VALUES (?, ?);");
+                    PreparedStatement pStatement = conn
+                            .prepareStatement("INSERT INTO facultyKeywords (facultyID, keywords) VALUES (?, ?);");
 
                     pStatement.setInt(1, facultyID);
                     pStatement.setString(2, i);
@@ -634,15 +653,40 @@ public class DataLayer {
                 e.printStackTrace();
             }
         }
-        
+
         return true;
+    }
+
+    public boolean addStudLogin(int studentID, String uname, String pass) {
+        String[] pwHashInfo = hashPass(pass);
+
+        try {
+            PreparedStatement pStatement = conn
+                    .prepareStatement("UPDATE student SET username=?, pwhash=?, salt=? WHERE studentID=?;");
+
+            pStatement.setString(1, uname);
+            pStatement.setString(2, pwHashInfo[1]);
+            pStatement.setString(3, pwHashInfo[0]);
+            pStatement.setInt(4, studentID);
+
+            pStatement.executeUpdate();
+
+            pStatement.close();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     public boolean addFacLogin(int facultyID, String uname, String pass) {
         String[] pwHashInfo = hashPass(pass);
 
         try {
-            PreparedStatement pStatement = conn.prepareStatement("UPDATE faculty SET username=?, pwhash=?, salt=? WHERE facultyID=?;");
+            PreparedStatement pStatement = conn
+                    .prepareStatement("UPDATE faculty SET username=?, pwhash=?, salt=? WHERE facultyID=?;");
 
             pStatement.setString(1, uname);
             pStatement.setString(2, pwHashInfo[1]);
@@ -667,7 +711,8 @@ public class DataLayer {
         String salt = "";
 
         try {
-            PreparedStatement pStatement = conn.prepareStatement("SELECT facultyID, pwhash, salt FROM faculty WHERE username=?");
+            PreparedStatement pStatement = conn
+                    .prepareStatement("SELECT facultyID, pwhash, salt FROM faculty WHERE username=?");
 
             pStatement.setString(1, uname);
 
@@ -677,7 +722,7 @@ public class DataLayer {
                 facID = rs.getInt("facultyID");
                 pwhash = rs.getString("pwhash");
                 salt = rs.getString("salt");
-    
+
                 rs.close();
                 pStatement.close();
             }
@@ -686,10 +731,41 @@ public class DataLayer {
             return -1;
         }
 
-        // System.out.println(pwhash);
-
         if (verifyPass(salt, pwhash, pass)) {
             return facID;
+        }
+
+        return -1;
+    }
+
+    public int checkStudLogin(String uname, String pass) {
+        int studID = -1;
+        String pwhash = "";
+        String salt = "";
+
+        try {
+            PreparedStatement pStatement = conn
+                    .prepareStatement("SELECT studentID, pwhash, salt FROM student WHERE username=?");
+
+            pStatement.setString(1, uname);
+
+            ResultSet rs = pStatement.executeQuery();
+
+            if (rs.next()) {
+                studID = rs.getInt("studentID");
+                pwhash = rs.getString("pwhash");
+                salt = rs.getString("salt");
+
+                rs.close();
+                pStatement.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+
+        if (verifyPass(salt, pwhash, pass)) {
+            return studID;
         }
 
         return -1;
@@ -707,7 +783,8 @@ public class DataLayer {
             SecretKeyFactory keyFac = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
             byte[] hashedPass = keyFac.generateSecret(kSpec).getEncoded();
 
-            return new String[] {Base64.getEncoder().encodeToString(salt), Base64.getEncoder().encodeToString(hashedPass)};
+            return new String[] { Base64.getEncoder().encodeToString(salt),
+                    Base64.getEncoder().encodeToString(hashedPass) };
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
         } finally {
@@ -717,13 +794,23 @@ public class DataLayer {
     }
 
     private static boolean verifyPass(String salt, String hash, String plainPass) {
-        PBEKeySpec kSpec = new PBEKeySpec(plainPass.toCharArray(), Base64.getDecoder().decode(salt), 10000, 500);
+
+        PBEKeySpec kSpec;
+
+        if ((salt != null && !salt.equals("")) && (hash != null && !hash.equals("")) && (plainPass != null && !plainPass.equals(""))) {
+
+            kSpec = new PBEKeySpec(plainPass.toCharArray(), Base64.getDecoder().decode(salt), 10000, 500);
+
+        }
+        else {
+
+            return false;
+
+        }
 
         try {
             SecretKeyFactory keyFac = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
             byte[] hashedPass = keyFac.generateSecret(kSpec).getEncoded();
-
-            // System.out.println("new hash: " + Base64.getEncoder().encodeToString(hashedPass) + "\nold hash: " + hash);
 
             if (Base64.getEncoder().encodeToString(hashedPass).equals(hash)) {
                 return true;
@@ -733,7 +820,7 @@ public class DataLayer {
         } finally {
             kSpec.clearPassword();
         }
-        
+
         return false;
     }
 

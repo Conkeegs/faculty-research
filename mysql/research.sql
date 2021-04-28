@@ -33,6 +33,9 @@ CREATE TABLE student (
     firstName VARCHAR(50),
     lastName VARCHAR(50),
     school VARCHAR(100),
+    username VARCHAR(50) UNIQUE,
+    pwhash VARCHAR(500),
+    salt VARCHAR(500),
     CONSTRAINT student_pk PRIMARY KEY (studentID)
 
 );
@@ -96,24 +99,24 @@ CREATE TABLE facultyKeywords (
 
 -- );
 
-INSERT INTO student (studentid, firstname, lastname, school) VALUES (1, "Steve", "Roberts", "RIT");
-INSERT INTO student (studentid, firstname, lastname, school) VALUES (2, "Mason", "Large", "RIT");
-INSERT INTO student (studentid, firstname, lastname, school) VALUES (3, "Henry", "Green", "RIT");
-INSERT INTO student (studentid, firstname, lastname, school) VALUES (4, "Chris", "Blue", "RIT");
-INSERT INTO student (studentid, firstname, lastname, school) VALUES (5, "Sarah", "Jones", "RIT");
-INSERT INTO student (studentid, firstname, lastname, school) VALUES (6, "Conor", "Keegan", "RIT");
-INSERT INTO student (studentid, firstname, lastname, school) VALUES (7, "Sam", "Romero", "RIT");
-INSERT INTO student (studentid, firstname, lastname, school) VALUES (8, "Camran", "Bridge", "RIT");
-INSERT INTO student (studentid, firstname, lastname, school) VALUES (9, "Clarise", "Turner", "RIT");
-INSERT INTO student (studentid, firstname, lastname, school) VALUES (10, "Ronald", "Williams", "RIT");
-INSERT INTO student (studentid, firstname, lastname, school) VALUES (11, "Bailey", "Anthony", "RIT");
-INSERT INTO student (studentid, firstname, lastname, school) VALUES (12, "Courtney", "Tanner", "RIT");
-INSERT INTO student (studentid, firstname, lastname, school) VALUES (13, "Claude", "Shelton", "RIT");
-INSERT INTO student (studentid, firstname, lastname, school) VALUES (14, "Hudson", "Dudley", "RIT");
-INSERT INTO student (studentid, firstname, lastname, school) VALUES (15, "Tyler", "Gibson", "RIT");
-INSERT INTO student (studentid, firstname, lastname, school) VALUES (16, "Savanah", "Montes", "RIT");
-INSERT INTO student (studentid, firstname, lastname, school) VALUES (17, "Abbey", "Henderson", "RIT");
-INSERT INTO student (studentid, firstname, lastname, school) VALUES (18, "Hetty", "Alexander", "RIT");
+INSERT INTO student (studentid, firstname, lastname, school, username, pwhash, salt) VALUES (1, "Steve", "Roberts", "RIT", "steveroberts@rit.edu", "k7ykP+csWopHxokdiY5rDcxvhYrclFYh4MpNW/HEXuWJhSvxCgHZ0B2x7RSdyCAO/06Inyy7v9Cgjz0lfwk=", "iuac20OTClEJeibNBhMNrOfhTTVtqJTHVc812UcQ3SI=");
+INSERT INTO student (studentid, firstname, lastname, school, username, pwhash, salt) VALUES (2, "Mason", "Large", "RIT", "masonlarge@rit.edu", "13jDTlQrH5QMo9QpmYO5H4Dq6fxn7hav+mxRpKkOkeNVe6LlB3OgG2VV2oqMz37hUPNGXYwLbgm89FPS05k=", "9V0JIAQ8LX/hjTi7pEBrrNKgGRK6DNrhtVW9j+Osrvw=");
+INSERT INTO student (studentid, firstname, lastname, school, username, pwhash, salt) VALUES (3, "Henry", "Green", "RIT", "henrygreen@rit.edu", "7ByzbBdvcKA+JIKSEOsIG4rZ4D5u/en1qwMpD9DyNguHDuLcKnMUximrOFCsQZ1YlpLzzDONjSAXQ0kmswE=", "tjDKieOsYeMn15H+6N/LU5KlQ4UAmkIcfcxNO4WlprI=");
+INSERT INTO student (studentid, firstname, lastname, school, username, pwhash, salt) VALUES (4, "Chris", "Blue", "RIT", "chrisblue@rit.edu", "bxVGCRdkMHnb0o4878sx2lS6Z9KxINsvCCUrx6YJ94oTImbyDRpCkh4xh5qLXZIO012KAk/8Rwp5hPsF4MU=", "bZTo68XMCdeAUaS4ZR9Xyj8nCEzwWnRbntPCBU6gWJU=");
+INSERT INTO student (studentid, firstname, lastname, school, username, pwhash, salt) VALUES (5, "Sarah", "Jones", "RIT", "sarahjones@rit.edu", "XyhyWM9jUJZ8hAbBY+p65FPctRCuDEaQCmntt0w9ep/9ad4/5/ClxY6ZYj/KeFWtCFmcs33Dqoav3dzlurw=", "WAQrk0tsUjI58rNdVYAIEz2RO4YrwZHsm5QVhZzHLFQ=");
+INSERT INTO student (studentid, firstname, lastname, school, username, pwhash, salt) VALUES (6, "Conor", "Keegan", "RIT", "conorkeegan@rit.edu", "A21B4QSnWmaz/Z94NdofaNUxUOTevF/Wa5a4rcDUpjhQrkrjoc0lAFwak7+A36AUorGRSonFucMNy0eVgvE=", "jjfuVdOC2bZzsm+8FCuvag/HxVcZLW3Ni0UXFAOBkR4=");
+INSERT INTO student (studentid, firstname, lastname, school, username, pwhash, salt) VALUES (7, "Sam", "Romero", "RIT", "samromero@rit.edu", "gHGY63KIhMS2xokiETgRPgzwB/BPakzFnxCq9RJ2AEIoX9jXiSRpwjm4epPybyQywtRdICS8iXXHp456kpI=", "5iuUAXOdh9IEBAX1cRkhpUVh/ws9JpG0sVeEenbMxNw=");
+INSERT INTO student (studentid, firstname, lastname, school, username, pwhash, salt) VALUES (8, "Camran", "Bridge", "RIT", "camranbridge@rit.edu", "au95sFqdrmY+4FFnh7EytUDXbQR/6QOfebbG0ut7zbjxoUqTPEHUb9a2iW0HYQge8K3I6Ztzw0Ge9xNYxCw=", "NdhL+8/yDzo+H5AllXfaXYlb+EMrzfevDXf9dLkRjbU=");
+INSERT INTO student (studentid, firstname, lastname, school, username, pwhash, salt) VALUES (9, "Clarise", "Turner", "RIT", "clariseturner@rit.edu", "ToTKA9CyQUDlX8BxoLeNjItypCQASPGt5KQF2vYap3A9BqEN86slZIumylyDzEDX5aRXrrOoC/XOCuRCc5M=", "gWXXQmG7+lmo42mASyOubhIjCJ2YqJrwK6eWcnRdRBI=");
+INSERT INTO student (studentid, firstname, lastname, school, username, pwhash, salt) VALUES (10, "Ronald", "Williams", "RIT", "ronaldwilliams@rit.edu", "jot9W4nnGmlFxvE1fRW1m25o8/Fc77uPpDoG17CaUv5ClflD1t9D4/7GqAquXalnHbq9c29CbSE+/srSFr4=", "euHYzsr3JzksssDBHqoO9qp+flB7kvajbm6eaSgD11Q=");
+INSERT INTO student (studentid, firstname, lastname, school, username, pwhash, salt) VALUES (11, "Bailey", "Anthony", "RIT", "baileyanthony@rit.edu", "fQBdvNbtBDYmS93sV3EI9vO+0wg1M3MetjNuKrjEW/roE6IKUDu8C9jI+JM0qJVJEsvwPF0iKjkpEwZ+qZM=", "nUDv2BJNj8gos2zX3DPnT8V5GTjCHIps1YQ2KEh2hzE=");
+INSERT INTO student (studentid, firstname, lastname, school, username, pwhash, salt) VALUES (12, "Courtney", "Tanner", "RIT", "courtneytanner@rit.edu", "PhwNRuIp09pFuTDWiWenvIoJtmTwu+9vSGMsVgxtMoH1fDTRrlaP9OKzZPB5JhfWfgXoPi3MjeKC2ffYdjo=", "g9tz3uAw6MoO3rkeTDevqY8jJ6vjKwm1Ws6h9sHJlug=");
+INSERT INTO student (studentid, firstname, lastname, school, username, pwhash, salt) VALUES (13, "Claude", "Shelton", "RIT", "claudeshelton@rit.edu", "MOnQ67TvH9jQZi1991UBsLnQyqzDRXxJ4+n/DJzsCFrxXQ06urecrQIyEapTjR5bOLEZdIfzTabCtEOKyqs=", "H1eC0CpRnNftHrRYtOVVFsSKL0oQShQrX7Li/gGmpqI=");
+INSERT INTO student (studentid, firstname, lastname, school, username, pwhash, salt) VALUES (14, "Hudson", "Dudley", "RIT", "hudsondudley@rit.edu", "20xiCs+Y4Z5hCngtkeoksvooyu5MeLmGBFEcUG4+o/S6VBpZYB2LAzgQB4Nx+Kp/YCdkapRm8Ce8CisJdsQ=", "J55bhtFqDqY+rDeV+iXukSRUZ3psNy95lMOsBTd9LcI=");
+INSERT INTO student (studentid, firstname, lastname, school, username, pwhash, salt) VALUES (15, "Tyler", "Gibson", "RIT", "tylergibson@rit.edu", "jOAdMcbp9sq6bDLjQo4sQWt2F+pFge++PvPCC1E3tjqJil9oxdtHT/jshU7FWRPvYJJYMLfqAtEWsNyqKHE=", "6EXgDVUc2wtPPAjUVxTZV6SJzDM0JdFoIr44G+o4eME=");
+INSERT INTO student (studentid, firstname, lastname, school, username, pwhash, salt) VALUES (16, "Savannah", "Montes", "RIT", "savannahmontes@rit.edu", "jzlKoPTmP+PYc5zJmitRasJeW+PYknAYsclcRyINvtfmT0hwAOHgUJJTojQdOApU/ehw8cNqnNJA0wUpv0g=", "yOryFYSwPs+GUk7mQayEEeGkFu1huerwdLo5YZ4YSeY=");
+INSERT INTO student (studentid, firstname, lastname, school, username, pwhash, salt) VALUES (17, "Abbey", "Henderson", "RIT", "abbeyhenderson@rit.edu", "7b3l1EqN0I4V1y1pVdpwvNU4BwQYfLe+AGp3vie1OHDBcH2kV44xrgOKXi7Z/fGXOmJnpR1HfpxwUT1oY1k=", "YBoFzSa2DWP5qTJuzECuBAaRpmT4tnhaIJ2JXNkTCAs=");
+INSERT INTO student (studentid, firstname, lastname, school, username, pwhash, salt) VALUES (18, "Hetty", "Alexander", "RIT", "hettyalexander@rit.edu", "rhFMr6890w8QH1aJrgQXvynElmmDm42nac05KeGO2TawlLicw6hr1lTqTQ4J4RIo/BCxfApmzB3Np7zr6u4=", "YaOiqLV8S0h8cEzA6BAKWP9g7PVxgw2xNXppHDD5ihQ=");
 
 INSERT INTO faculty (facultyID, firstname, lastname, school, username, pwhash, salt, facultyAbstract) VALUES (1, "Steve", "Smith", "RIT", "stevesmith@rit.edu", "fvXX38CFm65cZSw5pLT/Sa+eQTsBLglxfJMYmipnOT2obSuqtCXdXiOsLswAVYJzpFYbXrxbkhwnimYZtp8=", "t7npLksG7sJWhen1pVMc45fyZLZ/YGTUA6vgwwUdPmw=", "Steve Smith is really into Java. He has written multiple user interfaces in Java. This includes sign up systems, database information viewers, and web applications. He now teaches multiple Java classes at RIT.");
 INSERT INTO faculty (facultyID, firstname, lastname, school, username, pwhash, salt, facultyAbstract) VALUES (2, "George", "Preston", "RIT", "georgepreston@rit.edu", "fEmpqoBUTnPeKmOhnHP5bDzX4lIbxr997fAqjIoI+5rT9lnYI3wmIzUlx40rcIBaus+9irVuUrqhK5boxls=", "Ug0doNQxEpCCeKW6MIlEoMyWHZwjFM9hKNPdqsBfa/A=", "George Preston is a big supporter of object-oriented programming. Through his computer science classes at RIT, he teaches students the theory behing object-oriented programming and how it maps to real life problems.");
