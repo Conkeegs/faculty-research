@@ -682,6 +682,8 @@ public class DataLayer {
             return -1;
         }
 
+        // System.out.println(pwhash);
+
         if (verifyPass(salt, pwhash, pass)) {
             return facID;
         }
@@ -717,9 +719,9 @@ public class DataLayer {
             SecretKeyFactory keyFac = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
             byte[] hashedPass = keyFac.generateSecret(kSpec).getEncoded();
 
-            System.out.println("new hash: " + hashedPass + "\nold hash: " + Base64.getDecoder().decode(hash));
+            // System.out.println("new hash: " + Base64.getEncoder().encodeToString(hashedPass) + "\nold hash: " + hash);
 
-            if (hashedPass == Base64.getDecoder().decode(hash)) {
+            if (Base64.getEncoder().encodeToString(hashedPass).equals(hash)) {
                 return true;
             }
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
