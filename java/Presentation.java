@@ -131,6 +131,9 @@ public class Presentation extends JFrame {
 
             System.exit(0);
         }
+
+		setResizable(false);
+
     }
 
 	/**
@@ -366,6 +369,7 @@ class queryPanel extends JPanel {
 		JTextField jtfKeywords = new JTextField(20);
 		JTextArea jtaAbstract = new JTextArea(20, 25);
 		JButton jbSubmit = new JButton("Submit");
+		JButton jbBack = new JButton("Back");
 		
 		// general setup of components
 		jpQueryFields.setLayout(new BoxLayout(jpQueryFields, BoxLayout.Y_AXIS));
@@ -391,6 +395,7 @@ class queryPanel extends JPanel {
 		jpQueryFields.add(jtaAbstractScroll);
 		jpQueryFields.add(jpKeywords);
 		jpQueryFields.add(jbSubmit);
+		jpQueryFields.add(jbBack);
 		
 		jbSubmit.addActionListener(new ActionListener() {
 			@Override
@@ -405,6 +410,15 @@ class queryPanel extends JPanel {
 				String res = Presentation.getDLayer().getFacultyInfo(fName, lName, school, fAbstract, keywords);
 				
 				Presentation.setOpenedPanel(new queryResults(res, inFac));
+			}
+		});
+
+		jbBack.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				Presentation.setOpenedPanel(new loginUser());
+
 			}
 		});
 		
@@ -434,6 +448,7 @@ class queryPanel extends JPanel {
 		JTextField jtfSchool = new JTextField(20);
 		JTextField jtfSkills = new JTextField(20);
 		JButton jbSubmit = new JButton("Submit");
+		JButton jbBack = new JButton("Back");
 		
 		// Set the layout of the form to be vertical
 		jpQueryFields.setLayout(new BoxLayout(jpQueryFields, BoxLayout.Y_AXIS));
@@ -454,6 +469,7 @@ class queryPanel extends JPanel {
 		jpQueryFields.add(jpSchool);
 		jpQueryFields.add(jpSkills);
 		jpQueryFields.add(jbSubmit);
+		jpQueryFields.add(jbBack);
 		
 		jbSubmit.addActionListener(new ActionListener() {
       
@@ -467,6 +483,15 @@ class queryPanel extends JPanel {
 				String res = Presentation.getDLayer().getStudentInfo(fName, lName, school, skills);
 				
 				Presentation.setOpenedPanel(new queryResults(res, inFac));
+			}
+		});
+
+		jbBack.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				Presentation.setOpenedPanel(new loginUser());
+
 			}
 		});
 		
@@ -502,6 +527,7 @@ class insertPanel extends JPanel {
 		JTextField jtfKeywords = new JTextField(20);
 		JTextArea jtaAbstract = new JTextArea(20, 25);
 		JButton jbSubmit = new JButton("Submit");
+		JButton jbBack = new JButton("Back");
 		
 		// general setup of components
 		jpContents.setLayout(new BoxLayout(jpContents, BoxLayout.Y_AXIS));
@@ -514,18 +540,20 @@ class insertPanel extends JPanel {
 		jpLName.add(jtfLName);
 		jpSchool.add(new JLabel("School: "));
 		jpSchool.add(jtfSchool);
-		jpAbstract.add(new JLabel("Abstract: "));
 		jpAbstract.add(jtaAbstract);
 		jpKeywords.add(new JLabel("Keywords: "));
 		jpKeywords.add(jtfKeywords);
+		JScrollPane jtaAbstractScroll = new JScrollPane(jpAbstract, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		// Add components to form
 		jpContents.add(jpFName);
 		jpContents.add(jpLName);
 		jpContents.add(jpSchool);
-		jpContents.add(jpAbstract);
+		jpContents.add(new JLabel("Abstract: "));
+		jpContents.add(jtaAbstractScroll);
 		jpContents.add(jpKeywords);
 		jpContents.add(jbSubmit);
+		jpContents.add(jbBack);
 
 		add(jpContents);
 		
@@ -545,6 +573,15 @@ class insertPanel extends JPanel {
 				jtfSchool.setText("");
 				jtaAbstract.setText("");
 				jtfKeywords.setText("");
+			}
+		});
+
+		jbBack.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				Presentation.setOpenedPanel(new loginUser());
+
 			}
 		});
 	}
