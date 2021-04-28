@@ -657,6 +657,14 @@ public class DataLayer {
         return true;
     }
 
+    /**
+     * This method is only for CREATING new students. This is for debugging purposes and should
+     * only be used by developers. Should not be used in the final product.
+     * @param studentID the student's ID that is receiving a new username and password.
+     * @param uname the student's new username.
+     * @param pass the student's new password.
+     * @return a boolean that specifies whether the UPDATE statment was successful.
+     */
     public boolean addStudLogin(int studentID, String uname, String pass) {
         String[] pwHashInfo = hashPass(pass);
 
@@ -681,6 +689,14 @@ public class DataLayer {
         return false;
     }
 
+    /**
+     * This method is only for CREATING new faculty. This is for debugging purposes and should
+     * only be used by developers. Should not be used in the final product.
+     * @param facultyID the faculty's ID that is receiving a new username and password.
+     * @param uname the faculty's new username.
+     * @param pass the faculty's new username.
+     * @return a boolean that specifies whether the UPDATE statment was successful.
+     */
     public boolean addFacLogin(int facultyID, String uname, String pass) {
         String[] pwHashInfo = hashPass(pass);
 
@@ -705,6 +721,12 @@ public class DataLayer {
         return false;
     }
 
+    /**
+     * THis method checks to see if a faculty member's username and password are correct.
+     * @param uname the entered username.
+     * @param pass the entered password.
+     * @return an integer either representing the faculty's ID (successful) or -1 (unsuccessful)
+     */
     public int checkFacLogin(String uname, String pass) {
         int facID = -1;
         String pwhash = "";
@@ -738,6 +760,12 @@ public class DataLayer {
         return -1;
     }
 
+    /**
+     * THis method checks to see if a student's username and password are correct.
+     * @param uname the entered username.
+     * @param pass the entered password.
+     * @return an integer either representing the student's ID (successful) or -1 (unsuccessful)
+     */
     public int checkStudLogin(String uname, String pass) {
         int studID = -1;
         String pwhash = "";
@@ -771,6 +799,11 @@ public class DataLayer {
         return -1;
     }
 
+    /**
+     * This method uses some Java security-related classes to hash faculty and student passwords.
+     * @param plainPass the faculty/student password entered in plain-text.
+     * @return either the user's password-salt and hash (successful) or null (unsuccessful)
+     */
     private static String[] hashPass(String plainPass) {
         SecureRandom saltGen = new SecureRandom();
 
@@ -793,6 +826,14 @@ public class DataLayer {
         return null;
     }
 
+    /**
+     * This method checks to see if the password entered by a user matches the password
+     * stored in the database for that user.
+     * @param salt the user's password-salt.
+     * @param hash the user's hashed password.
+     * @param plainPass the user's plain-text password.
+     * @return true if the passwords match, false if not
+     */
     private static boolean verifyPass(String salt, String hash, String plainPass) {
 
         PBEKeySpec kSpec;
@@ -823,142 +864,5 @@ public class DataLayer {
 
         return false;
     }
-
-    /**
-     * This method just fetches the skills from a student
-     * 
-     * @param firstName the first name of the student (optional).
-     * @param lastName  the first name of the student (optional).
-     * @param school    the first name of the student (optional).
-     * @param skills    the skills of the student (optional).
-     * @return a string containing the information of all students fetched.
-     */
-    // public ArrayList<ArrayList<String>> getStudentSkills(ArrayList<String>
-    // skills) {
-
-    // ArrayList<String> studentIDs = new ArrayList<String>();
-    // ArrayList<ArrayList<String>> skillArrayLists = new
-    // ArrayList<ArrayList<String>>();
-    // ArrayList<ArrayList<String>> returnedLists = new
-    // ArrayList<ArrayList<String>>();
-
-    // try {
-
-    // statement = conn.createStatement();
-
-    // resultSet = statement.executeQuery("SELECT studentID FROM student");
-
-    // while (resultSet.next()) {
-
-    // studentIDs.add(resultSet.getString("studentID"));
-
-    // }
-
-    // for (int i = 0; i < studentIDs.size(); i++) {
-
-    // ArrayList<String> tempList = new ArrayList<String>();
-
-    // resultSet = statement.executeQuery("SELECT DISTINCT skill FROM skills JOIN
-    // studentskill WHERE studentID = " + studentIDs.get(i));
-
-    // while (resultSet.next()) {
-
-    // if (tempList.size() == 0) {
-
-    // tempList.add(studentIDs.get(i));
-
-    // }
-
-    // tempList.add(resultSet.getString("skill"));
-
-    // }
-
-    // skillArrayLists.add(tempList);
-
-    // }
-
-    // for (int i = 0; i < skillArrayLists.size(); i++) {
-
-    // int matches = 0;
-    // boolean addedMatches = false;
-
-    // for (int x = 0; x < skillArrayLists.get(i).size(); x++) {
-
-    // for (int y = 0; y < skills.size(); y++) {
-
-    // if (skills.get(y).equals(skillArrayLists.get(i).get(x))) {
-
-    // if (addedMatches) {
-
-    // skillArrayLists.get(i).set(skillArrayLists.get(i).size() - 1, ++matches +
-    // "");
-
-    // }
-    // else {
-
-    // skillArrayLists.get(i).add(++matches + "");
-    // addedMatches = true;
-
-    // }
-
-    // }
-
-    // }
-
-    // }
-
-    // }
-
-    // System.out.println(skillArrayLists);
-
-    // returnedLists.add(new ArrayList<String>());
-    // returnedLists.get(0).add("0");
-
-    // for (int i = 0; i < skillArrayLists.size(); i++) {
-
-    // if (Integer.parseInt(skillArrayLists.get(i).get(skillArrayLists.get(i).size()
-    // - 1)) > Integer.parseInt(returnedLists.get(0).get(returnedLists.get(0).size()
-    // - 1))) {
-
-    // System.out.println(Integer.parseInt(skillArrayLists.get(i).get(skillArrayLists.get(i).size()
-    // - 1)));
-
-    // if (returnedLists.size() > 1) {
-
-    // returnedLists = new ArrayList<ArrayList<String>>();
-
-    // }
-
-    // returnedLists.set(0, skillArrayLists.get(i));
-
-    // }
-    // else if
-    // (Integer.parseInt(skillArrayLists.get(i).get(skillArrayLists.get(i).size() -
-    // 1)) == Integer.parseInt(returnedLists.get(0).get(returnedLists.get(0).size()
-    // - 1))) {
-
-    // returnedLists.add(skillArrayLists.get(i));
-
-    // }
-
-    // }
-
-    // return returnedLists;
-
-    // }
-    // catch(SQLException sqlException) {
-
-    // sqlException.printStackTrace();
-    // return new ArrayList<ArrayList<String>>();
-
-    // }
-    // catch(Exception exception) {
-
-    // exception.printStackTrace();
-    // return new ArrayList<ArrayList<String>>();
-
-    // }
-
-    // }
 
 }
