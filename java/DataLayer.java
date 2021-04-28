@@ -557,7 +557,7 @@ public class DataLayer {
         try {
             conn.setAutoCommit(false);
 
-            if (fName != "") {
+            if (!fName.equals("")) {
                 PreparedStatement pStatement = conn.prepareStatement("UPDATE faculty SET firstName=? WHERE facultyID=?;");
 
                 pStatement.setString(1, fName);
@@ -568,7 +568,7 @@ public class DataLayer {
                 pStatement.close();
             }
 
-            if (lName != "") {
+            if (!lName.equals("")) {
                 PreparedStatement pStatement = conn.prepareStatement("UPDATE faculty SET lastName=? WHERE facultyID=?;");
 
                 pStatement.setString(1, lName);
@@ -579,7 +579,7 @@ public class DataLayer {
                 pStatement.close();
             }
 
-            if (school != "") {
+            if (!school.equals("")) {
                 PreparedStatement pStatement = conn.prepareStatement("UPDATE faculty SET school=? WHERE facultyID=?;");
 
                 pStatement.setString(1, school);
@@ -590,7 +590,7 @@ public class DataLayer {
                 pStatement.close();
             }
 
-            if (facAbstract != "") {
+            if (!facAbstract.equals("")) {
                 PreparedStatement pStatement = conn.prepareStatement("UPDATE faculty SET facultyAbstract=? WHERE facultyID=?;");
 
                 pStatement.setString(1, facAbstract);
@@ -603,7 +603,11 @@ public class DataLayer {
 
             if (keywords.size() != 0) {
                 for (String i: keywords) {
-                    PreparedStatement pStatement = conn.prepareStatement("INSERT INTO facultyKeywords VALUES (?, ?);");
+                    if (i.equals("")) {
+                        break;
+                    }
+
+                    PreparedStatement pStatement = conn.prepareStatement("INSERT INTO facultyKeywords (facultyID, keywords) VALUES (?, ?);");
 
                     pStatement.setInt(1, facultyID);
                     pStatement.setString(2, i);

@@ -133,6 +133,25 @@ public class Presentation extends JFrame {
         }
     }
 
+	/**
+	 * Convert Comma Separated List Input to an ArrayList.
+	 * 
+	 * @param keywords String keywords to convert to an ArrayList
+	 * @return ArrayList<String> all input keywords as an ArrayList
+	 */
+	public static ArrayList<String> parseCommaList(String ls) {
+		ArrayList<String> ret = new ArrayList<String>();
+		// Separate comma-separated keywords
+		String[] retArr = ls.split(",");
+		
+		// Trim whitespace from each keyword and add to return ArrayList
+		for (String i: retArr) {
+			ret.add(i.trim());
+		}
+		
+		return ret;
+	}
+
     /**
      * Getter for the Currently Opened JPanel.
      * 
@@ -223,7 +242,7 @@ class loginUser extends JPanel {
 		jbGuest.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Presentation.setOpenedPanel(new queryPanel());
+				Presentation.setOpenedPanel(new queryPanel(false));
 			}
 		});
 		
@@ -286,11 +305,14 @@ class queryPanel extends JPanel {
 	
 	private JPanel jpQueryFields;
 	private String openedFields;
+	private boolean inFac;
 	
-	public queryPanel() {
+	public queryPanel(boolean inFac) {
 		// Instantiate components
 		JComboBox<String> jcbFacStud = new JComboBox<String>();
 		jpQueryFields = new JPanel();
+
+		this.inFac = inFac;
 		
 		// Set layout and add a border around the form
 		setLayout(new BorderLayout());
@@ -377,12 +399,12 @@ class queryPanel extends JPanel {
 				String lName = jtfLName.getText();
 				String school = jtfSchool.getText();
 				String fAbstract = jtaAbstract.getText();
-				ArrayList<String> keywords = parseCommaList(jtfKeywords.getText());
+				ArrayList<String> keywords = Presentation.parseCommaList(jtfKeywords.getText());
 				
 				// Get results from data layer
 				String res = Presentation.getDLayer().getFacultyInfo(fName, lName, school, fAbstract, keywords);
 				
-				Presentation.setOpenedPanel(new queryResults(res));
+				Presentation.setOpenedPanel(new queryResults(res, inFac));
 			}
 		});
 		
@@ -440,11 +462,11 @@ class queryPanel extends JPanel {
 				String fName = jtfFName.getText();
 				String lName = jtfLName.getText();
 				String school = jtfSchool.getText();
-				ArrayList<String> skills = parseCommaList(jtfSkills.getText());
+				ArrayList<String> skills = Presentation.parseCommaList(jtfSkills.getText());
 				
 				String res = Presentation.getDLayer().getStudentInfo(fName, lName, school, skills);
 				
-				Presentation.setOpenedPanel(new queryResults(res));
+				Presentation.setOpenedPanel(new queryResults(res, inFac));
 			}
 		});
 		
@@ -452,25 +474,6 @@ class queryPanel extends JPanel {
 		Presentation.getPLayer().revalidate();
 		Presentation.getPLayer().repaint();
 		Presentation.getPLayer().pack();
-	}
-	
-	/**
-	 * Convert Comma Separated List Input to an ArrayList.
-	 * 
-	 * @param keywords String keywords to convert to an ArrayList
-	 * @return ArrayList<String> all input keywords as an ArrayList
-	 */
-	private ArrayList<String> parseCommaList(String ls) {
-		ArrayList<String> ret = new ArrayList<String>();
-		// Separate comma-separated keywords
-		String[] retArr = ls.split(",");
-		
-		// Trim whitespace from each keyword and add to return ArrayList
-		for (String i: retArr) {
-			ret.add(i.trim());
-		}
-		
-		return ret;
 	}
 }
 
@@ -533,7 +536,7 @@ class insertPanel extends JPanel {
 				String lName = jtfLName.getText();
 				String school = jtfSchool.getText();
 				String fAbstract = jtaAbstract.getText();
-				ArrayList<String> keywords = parseCommaList(jtfKeywords.getText());
+				ArrayList<String> keywords = Presentation.parseCommaList(jtfKeywords.getText());
 				
 				Presentation.getDLayer().updateFac(Presentation.loggedFacID, fName, lName, school, fAbstract, keywords);
 
@@ -544,26 +547,6 @@ class insertPanel extends JPanel {
 				jtfKeywords.setText("");
 			}
 		});
-	}
-
-	// TODO: Refactor this to reuse code
-	/**
-	 * Convert Comma Separated List Input to an ArrayList.
-	 * 
-	 * @param keywords String keywords to convert to an ArrayList
-	 * @return ArrayList<String> all input keywords as an ArrayList
-	 */
-	private ArrayList<String> parseCommaList(String ls) {
-		ArrayList<String> ret = new ArrayList<String>();
-		// Separate comma-separated keywords
-		String[] retArr = ls.split(",");
-		
-		// Trim whitespace from each keyword and add to return ArrayList
-		for (String i: retArr) {
-			ret.add(i.trim());
-		}
-		
-		return ret;
 	}
 }
 
@@ -602,7 +585,7 @@ class facPanel extends JPanel {
 				}
 				if (jcbInsQuery.getSelectedItem().equals(QUERY) && !(openedPanel instanceof queryPanel)) {
 					contents.remove(openedPanel);
-					openedPanel = new queryPanel();
+					openedPanel = new queryPanel(true);
 					contents.add(openedPanel);
 					Presentation.getPLayer().revalidate();
 					Presentation.getPLayer().repaint();
@@ -634,7 +617,7 @@ class queryResults extends JPanel {
 	 * 
 	 * @param resContent String Result content to be displayed
 	 */
-	public queryResults(String resContent) {
+	public queryResults(String resContent, boolean fromFac) {
 
 		JPanel resContentContainer = new JPanel(new BorderLayout());
 		JTextArea resContentContainerText = new JTextArea(resContent);
@@ -652,7 +635,11 @@ class queryResults extends JPanel {
 		jbBack.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Presentation.setOpenedPanel(new queryPanel());
+				if (fromFac) {
+					Presentation.setOpenedPanel(new facPanel());
+				} else {
+					Presentation.setOpenedPanel(new queryPanel(false));
+				}
 			}
 		});
 		
