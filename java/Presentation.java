@@ -235,7 +235,7 @@ class loginUser extends JPanel {
 
 				if (result != -1) {
 					Presentation.loggedFacID = result;
-					Presentation.setOpenedPanel(new insertPanel());
+					Presentation.setOpenedPanel(new facPanel());
 				} else {
 					jtfPass.setText("");
 					jlIncorrectPass.setVisible(true);
@@ -523,6 +523,8 @@ class insertPanel extends JPanel {
 		jpContents.add(jpAbstract);
 		jpContents.add(jpKeywords);
 		jpContents.add(jbSubmit);
+
+		add(jpContents);
 		
 		jbSubmit.addActionListener(new ActionListener() {
 			@Override
@@ -611,6 +613,7 @@ class facPanel extends JPanel {
 
 		contents.add(jcbInsQuery);
 		contents.add(openedPanel);
+		add(contents);
 	}
 }
 
