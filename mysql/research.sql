@@ -14,7 +14,7 @@ USE facultyResearch;
 DROP TABLE IF EXISTS faculty;
 CREATE TABLE faculty (
 
-    facultyID INT,
+    facultyID INT NOT NULL AUTO_INCREMENT,
     firstName VARCHAR(50),
     lastName VARCHAR(50),
     school VARCHAR(100),

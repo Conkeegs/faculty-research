@@ -311,7 +311,8 @@ class loginUser extends JPanel {
 
 				} else {
 					jtfPass.setText("");
-					JOptionPane.showMessageDialog(null, "Your username or password is incorrect.", "Invalid Credentials", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Your username or password is incorrect.",
+							"Invalid Credentials", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -399,6 +400,9 @@ class queryPanel extends JPanel {
 		add(jcbFacStud, BorderLayout.NORTH);
 	}
 
+	/**
+	 * This method sets up the page that allows users to search for faculty.
+	 */
 	private void queryFAC() {
 		// Set tracker variable and remove existing panel
 		openedFields = FAC;
@@ -611,19 +615,51 @@ class insertPanel extends JPanel {
 		jbSubmit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String fName = jtfFName.getText();
-				String lName = jtfLName.getText();
-				String school = jtfSchool.getText();
-				String fAbstract = jtaAbstract.getText();
-				ArrayList<String> keywords = Presentation.parseCommaList(jtfKeywords.getText());
 
-				Presentation.getDLayer().updateFac(Presentation.loggedFacID, fName, lName, school, fAbstract, keywords);
+				if ((jtfFName.getText() == null || jtfFName.getText().equals("")) || (jtfLName.getText() == null || jtfLName.getText().equals("")) 
+				|| (jtfSchool.getText() == null || jtfSchool.getText().equals("")) || (jtaAbstract.getText() == null || jtaAbstract.getText().equals(""))
+				|| (jtfKeywords.getText() == null || jtfKeywords.getText().equals(""))) {
 
-				jtfFName.setText("");
-				jtfLName.setText("");
-				jtfSchool.setText("");
-				jtaAbstract.setText("");
-				jtfKeywords.setText("");
+					JOptionPane.showMessageDialog(null, "Please fill out all fields!",
+							"Invalid Insert Information", JOptionPane.ERROR_MESSAGE);
+
+				} else {
+
+					jtfFName.setText(jtfFName.getText().replaceAll(" ", ""));
+					jtfFName.setText(jtfFName.getText().trim());
+					jtfLName.setText(jtfLName.getText().replaceAll(" ", ""));
+					jtfLName.setText(jtfLName.getText().trim());
+					jtfSchool.setText(jtfSchool.getText().replaceAll(" ", ""));
+					jtfSchool.setText(jtfSchool.getText().trim());
+					jtfKeywords.setText(jtfKeywords.getText().replaceAll(" ", ""));
+					jtfKeywords.setText(jtfKeywords.getText().trim());
+
+					String fName = jtfFName.getText();
+					String lName = jtfLName.getText();
+					String school = jtfSchool.getText();
+					String fAbstract = jtaAbstract.getText();
+					ArrayList<String> keywords = Presentation.parseCommaList(jtfKeywords.getText());
+
+					if (Presentation.getDLayer().insertFac(fName, lName, school, fAbstract, keywords)) {
+
+						JOptionPane.showMessageDialog(null, "Member successfully inserted!", "Entry Added", JOptionPane.OK_OPTION);
+
+					}
+					else {
+
+						JOptionPane.showMessageDialog(null, "Member was unable to be inserted!", "Entry Error", JOptionPane.ERROR_MESSAGE);
+
+					}
+					
+
+					jtfFName.setText("");
+					jtfLName.setText("");
+					jtfSchool.setText("");
+					jtaAbstract.setText("");
+					jtfKeywords.setText("");
+
+				}
+
 			}
 		});
 
@@ -638,6 +674,10 @@ class insertPanel extends JPanel {
 	}
 }
 
+/**
+ * This class sets up the JPanel that appears when a user signs in as a faculty
+ * member.
+ */
 class facPanel extends JPanel {
 	private final String INS = "Insert";
 	private final String QUERY = "Query";
@@ -729,7 +769,6 @@ class queryResults extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (fromFac) {
 					Presentation.setOpenedPanel(new facPanel());
-					System.out.println("fac");
 				} else {
 					Presentation.setOpenedPanel(queryPanelStud);
 				}

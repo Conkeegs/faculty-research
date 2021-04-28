@@ -567,6 +567,60 @@ public class DataLayer {
         }
     }
 
+    public boolean insertFac(String fName, String lName, String school, String facAbstract, ArrayList<String> keywords) {
+
+        String sql = "INSERT INTO faculty (firstname, lastname, school, username, pwhash, salt, facultyAbstract) VALUES (?, ?, ?, ?, ?, ?, ?);";
+
+        try {
+
+            PreparedStatement pStatement = conn.prepareStatement(sql);
+
+            String username = (fName + lName).toLowerCase() + "@rit.edu";
+            String[] hashedPass = hashPass("password");
+
+            pStatement.setString(1, fName);
+            pStatement.setString(2, lName);
+            pStatement.setString(3, school);
+            pStatement.setString(4, username);
+            pStatement.setString(5, hashedPass[1]);
+            pStatement.setString(6, hashedPass[0]);
+            pStatement.setString(7, facAbstract);
+
+            pStatement.executeUpdate();
+
+            sql = "SELECT facultyID FROM faculty WHERE username = '" + username + "'";
+
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(sql);
+            resultSet.next();
+
+            int facultyID = resultSet.getInt(1);
+
+            sql = "INSERT INTO facultyKeywords (facultyID, keywords) VALUES (?, ?)";
+
+            for (int i = 0; i < keywords.size(); i++) {
+
+                pStatement = conn.prepareStatement(sql);
+
+                pStatement.setInt(1, facultyID);
+                pStatement.setString(2, keywords.get(i));
+
+                pStatement.executeUpdate();
+
+            }
+
+            pStatement.close();
+
+            return true;
+
+        } catch (SQLException e) {
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
+
     public boolean updateFac(int facultyID, String fName, String lName, String school, String facAbstract,
             ArrayList<String> keywords) {
         try {
@@ -658,11 +712,14 @@ public class DataLayer {
     }
 
     /**
-     * This method is only for CREATING new students. This is for debugging purposes and should
-     * only be used by developers. Should not be used in the final product.
-     * @param studentID the student's ID that is receiving a new username and password.
-     * @param uname the student's new username.
-     * @param pass the student's new password.
+     * This method is only for CREATING new students. This is for debugging purposes
+     * and should only be used by developers. Should not be used in the final
+     * product.
+     * 
+     * @param studentID the student's ID that is receiving a new username and
+     *                  password.
+     * @param uname     the student's new username.
+     * @param pass      the student's new password.
      * @return a boolean that specifies whether the UPDATE statment was successful.
      */
     public boolean addStudLogin(int studentID, String uname, String pass) {
@@ -690,11 +747,14 @@ public class DataLayer {
     }
 
     /**
-     * This method is only for CREATING new faculty. This is for debugging purposes and should
-     * only be used by developers. Should not be used in the final product.
-     * @param facultyID the faculty's ID that is receiving a new username and password.
-     * @param uname the faculty's new username.
-     * @param pass the faculty's new username.
+     * This method is only for CREATING new faculty. This is for debugging purposes
+     * and should only be used by developers. Should not be used in the final
+     * product.
+     * 
+     * @param facultyID the faculty's ID that is receiving a new username and
+     *                  password.
+     * @param uname     the faculty's new username.
+     * @param pass      the faculty's new username.
      * @return a boolean that specifies whether the UPDATE statment was successful.
      */
     public boolean addFacLogin(int facultyID, String uname, String pass) {
@@ -722,10 +782,13 @@ public class DataLayer {
     }
 
     /**
-     * THis method checks to see if a faculty member's username and password are correct.
+     * THis method checks to see if a faculty member's username and password are
+     * correct.
+     * 
      * @param uname the entered username.
-     * @param pass the entered password.
-     * @return an integer either representing the faculty's ID (successful) or -1 (unsuccessful)
+     * @param pass  the entered password.
+     * @return an integer either representing the faculty's ID (successful) or -1
+     *         (unsuccessful)
      */
     public int checkFacLogin(String uname, String pass) {
         int facID = -1;
@@ -762,9 +825,11 @@ public class DataLayer {
 
     /**
      * THis method checks to see if a student's username and password are correct.
+     * 
      * @param uname the entered username.
-     * @param pass the entered password.
-     * @return an integer either representing the student's ID (successful) or -1 (unsuccessful)
+     * @param pass  the entered password.
+     * @return an integer either representing the student's ID (successful) or -1
+     *         (unsuccessful)
      */
     public int checkStudLogin(String uname, String pass) {
         int studID = -1;
@@ -800,9 +865,12 @@ public class DataLayer {
     }
 
     /**
-     * This method uses some Java security-related classes to hash faculty and student passwords.
+     * This method uses some Java security-related classes to hash faculty and
+     * student passwords.
+     * 
      * @param plainPass the faculty/student password entered in plain-text.
-     * @return either the user's password-salt and hash (successful) or null (unsuccessful)
+     * @return either the user's password-salt and hash (successful) or null
+     *         (unsuccessful)
      */
     private static String[] hashPass(String plainPass) {
         SecureRandom saltGen = new SecureRandom();
@@ -827,10 +895,11 @@ public class DataLayer {
     }
 
     /**
-     * This method checks to see if the password entered by a user matches the password
-     * stored in the database for that user.
-     * @param salt the user's password-salt.
-     * @param hash the user's hashed password.
+     * This method checks to see if the password entered by a user matches the
+     * password stored in the database for that user.
+     * 
+     * @param salt      the user's password-salt.
+     * @param hash      the user's hashed password.
      * @param plainPass the user's plain-text password.
      * @return true if the passwords match, false if not
      */
@@ -838,12 +907,12 @@ public class DataLayer {
 
         PBEKeySpec kSpec;
 
-        if ((salt != null && !salt.equals("")) && (hash != null && !hash.equals("")) && (plainPass != null && !plainPass.equals(""))) {
+        if ((salt != null && !salt.equals("")) && (hash != null && !hash.equals(""))
+                && (plainPass != null && !plainPass.equals(""))) {
 
             kSpec = new PBEKeySpec(plainPass.toCharArray(), Base64.getDecoder().decode(salt), 10000, 500);
 
-        }
-        else {
+        } else {
 
             return false;
 
