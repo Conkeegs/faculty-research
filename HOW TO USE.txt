@@ -1,6 +1,259 @@
-For now, only searching for students works. We will add more functionality later, as one of our groups members has left.
+Before we start, I just wanted to start off and say that me and Eli worked on this ourselves. We are proud of the product that
+came out with just two active team members. Sections of directions will be separated by "++++" lines, and I will guide you through. 
+When follwing the tutorial, please try and stay on track and follow each step listed in the "**Step**" text. You don't have to, 
+but it's just for neatnes. IF YOU DO NOT WANT TO FOLLOW ALONG (although i suggest it), PLEASE SCROLL ALL THE WAY TO THE BOTTOM, 
+as i have housed all the info in the database down there for you to use in the program.
 
-Capital letters matter, so please view the SQL file for the inserts at the bottom. This will tell you the name of students
-and the schools they attend.
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-"presentation.java" contains main method.
+The program will start off by prompting you with a "JOptionPane" used for signing in to the actual program. Please enter your
+database username and password here.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Next, you have three options. Sign in as a faculty member, a student, or "Continue as Guest". Below I will list all faculty and
+student login information. You do not need this information for guests, however:
+
+FACULTY USERNAMES: bradyfleming@rit.edu, cassidyferry@rit.edu, dannyforest@rit.edu, georgepreston@rit.edu, gregwest@rit.edu, heatherbrewer@rit.edu, junipersims@rit.edu, karenbrown@rit.edu, madisonmann@rit.edu, osmanwelch@rit.edu, stevesmith@rit.edu, terrymurray@rit.edu 
+FACULTY PASSWORD: All of them use "password".
+
+STUDENT USERNAMES: abbeyhenderson@rit.edu, baileyanthony@rit.edu, camranbridge@rit.edu, chrisblue@rit.edu, clariseturner@rit.edu, claudeshelton@rit.edu, conorkeegan@rit.edu, courtneytanner@rit.edu, henrygreen@rit.edu, hettyalexander@rit.edu, hudsondudley@rit.edu, masonlarge@rit.edu, ronaldwilliams@rit.edu, samromero@rit.edu, sarahjones@rit.edu, savannahmontes@rit.edu, steveroberts@rit.edu, tylergibson@rit.edu
+
+***IMPORTANT***: The data layer checks if the information entered is of a student or a faculty member, and displays certain information
+based on this fact. Also, entering in the wrong information will present you with a warning "JComboBox", telling you that the information
+entered is incorrect, and will let you try again. If you try and sign in, please hit the "Login" button, do not try and press enter,
+as this will not do anything.
+
+**STEP**: Please press the "Continute as Guest" button.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Next, on this page, you have a dropdown menu at the top that allows you to do only two things since you are a guest: query faculty or
+query students. This information is DYNAMIC, so you can fill out as many fields as you want. You can even leave all of them empty if
+you want, and it will just display all faculty/students.
+
+**IMPORTANT**: Names that have spaces in them will be trimmed down to single words. This is just because having two first/last names
+would not make sense. Also, faculty only has school "RIT", but more schools can be entered later. Also, "skills" and "keywords" at
+the bottom of each query option MUST be comma separated.
+
+**STEP**: Please search for a faculty member by making sure "Search for Faculty" is selected at the top. Enter "RIT" for the school.
+Feel free to have it be in all lowercase, as case does not matter.
+**STEP**: At the bottom, you will notice a "Back" button. This will take you back to the guest query panel. It will reset what you
+have selected though (on purpose and for neatness).
+**STEP**: Please select "Search for students" from the dropdown menu above. You will notice a panel-change.
+**STEP**: Please enter "Conor", and press the "Submit" button once again.
+**STEP**: Once you have the information, press the "Back" button at the bottom once again. You will notice "Search for Faculty" above
+is once again selected. Don't worry, this is a design decision by us.
+**STEP**: Lastly for this panel, please press the other "Back" button at the bottom of this page. This will navigate you back to the
+sign-in page.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+This time, we will sign in as a faculty member.
+
+**IMPORTANT**: Just another note that you must enter in an actualy faculty member account to gain their rights.
+
+**STEP**: Please enter "stevesmith@rit.edu" (or any other faculty account) and type "password" for the password.
+**STEP**: Press the "Login" button to enter as "Steve".
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+You will notice a panel that is pretty similar to the "guest" panel, but this time, we have an extra two dropdown menus at the top.
+This time, we have the options "Insert Faculty", "Update Faculty", "Delete Faculty", and "Query".
+
+**IMPORTANT**: The "query option opens up an extra "dropdown" menu, giving you access to the same options as a "guest" member. Also
+not entering ALL information on the "Insert Faculty" panel will not let you pass. You must enter the full information of a new faculty
+member. Also, "keywords" and "skills" at the bottom of each panel, once again, MUST be comma separated.
+
+**STEP**: Make sure "Insert Faculty" is selected from the top, and fill out ALL fields (as stated above). Enter "Madison" for a new
+first name, enter "Keegan" for a new last name, enter "Mechanicville" for a new school, enter "talking and jumpinh" for the abstract, 
+and enter "Talking, Jumping" for new keywords.
+**STEP**: Press the "Submit" button at the bottom. You should get a "JOptionPane" telling you whether you entered the right
+information or not.
+**STEP**: Please select "Update Faculty" from the top dropdown menu.
+**STEP**: Please type in "4" for the faculty id, enter "David" for the first name, enter "Bones" for the last name, enter "Harvard"
+for the school, enter "likes math and science" for the abstract, and enter "Math, Science" for the keywords. A "JOptionPane" will
+tell you if you are successful or not.
+**STEP**: Please select "Delete Faculty" from the top dropdown menu.
+**STEP**: Please enter in the faculty id of "1" and press "Submit". A "JOptionPane" will tell you if you are successful.
+**STEP**: Please select "Query" from the top. I have already gone over in an earlier step how to query, but be warned,
+once you query, the dropdown menu above will "reset" to "Insert Faculty" for design purposes.
+**STEP**: Once you are done, please select the "Back" button at the bottom of the dropdown menu page (not to be confused with the 
+query results page). You will be taken back to the login page once again.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+This time, we will sign in as a student.
+
+**IMPORTANT**: Already went over notes on this page.
+
+**STEP**: Please enter "hettyalexander@rit.edu" as the username and "password" as the password.
+**STEP**: Since the "student" capabilites are the same as the "guest" capabilites", we will now view our changes we have made to the
+database with out professors! Please press the "submit" button WITHOUT entering information in the fields. If you look among the 13
+faculty members, you should see that id "4" is changed to fit the information you entered earlier, if "1" should be gone, and id "13"
+should be the member you "inserted".
+**STEP**: Please press the "Back" button on the query results page.
+**STEP**: Next press the "Back" button on the bottom of the page again to navigate back to the sign-in page.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+As a last and final part of these directions, we will once again sign in as a faculty, but this time, using YOUR faculty that you
+created (creating new faculty allows you to sign in with them too, because their new information is dynamically created).
+
+**IMPORTANT**: Already went over notes on this page.
+
+**STEP**: Please sign in using "madisonkeegan@rit.edu" as your username and "password" as your password. Notice how she has every
+capability that any regular faculty would have due to dynamic setup of her profile.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+BELOW IS ALL INFORMATION EXTRA INFO IN THE DATABASE (besides usernames and passwords):
+
++------------------------+
+| keywords               |
++------------------------+
+| Object                 |
+| Object-oriented        |
+| Programming            |
+| Computer science       |
+| Computer               |
+| RIT                    |
+| Theory                 |
+| Computing              |
+| Security               |
+| Professor              |
+| Computing security     |
+| Book                   |
+| Books                  |
+| Language               |
+| Python                 |
+| Data                   |
+| Speech                 |
+| Project                |
+| Application            |
+| Applications           |
+| Mobile                 |
+| Develop                |
+| Design                 |
+| Swift                  |
+| Code                   |
+| Create                 |
+| Interface              |
+| Web                    |
+| Web design             |
+| Knowledge              |
+| Website                |
+| User                   |
+| Hard                   |
+| Assembly               |
+| Experience             |
+| Game                   |
+| System                 |
+| Write                  |
+| Machine                |
+| Hardware               |
+| JavaScript             |
+| Skill                  |
+| Research               |
+| Function               |
+| Functional             |
+| Functional programming |
+| School                 |
+| Major                  |
+| Career                 |
+| Level                  |
+| Video game             |
+| Tutorial               |
+| C++                    |
+| Script                 |
+| Software               |
+| Engineer               |
+| Software engineering   |
+| Talking                |
+| Jumping                |
+| Math                   |
+| Science                |
++------------------------+
+
++-------------+
+| skill       |
++-------------+
+| C++         |
+| C           |
+| C#          |
+| Objective-C |
+| Java        |
+| Python      |
+| Perl        |
+| Go          |
+| HTML        |
+| CSS         |
+| JavaScript  |
+| MySQL       |
+| PHP         |
+| Swift       |
++-------------+
+
++-----------+---------+
+| studentID | skillID |
++-----------+---------+
+|         1 |       1 |
+|         5 |       1 |
+|         6 |       1 |
+|         7 |       1 |
+|        14 |       1 |
+|        17 |       1 |
+|         6 |       2 |
+|         9 |       2 |
+|        12 |       2 |
+|        13 |       2 |
+|        14 |       2 |
+|         1 |       3 |
+|         6 |       3 |
+|         7 |       3 |
+|        14 |       3 |
+|         1 |       4 |
+|        12 |       4 |
+|         5 |       5 |
+|         7 |       5 |
+|         8 |       5 |
+|        12 |       5 |
+|        14 |       5 |
+|         4 |       6 |
+|         8 |       6 |
+|         9 |       6 |
+|        13 |       6 |
+|         4 |       7 |
+|        10 |       7 |
+|        11 |       7 |
+|        15 |       7 |
+|        16 |       7 |
+|         4 |       8 |
+|        10 |       8 |
+|        14 |       8 |
+|        15 |       8 |
+|        16 |       8 |
+|         2 |       9 |
+|         7 |       9 |
+|        11 |       9 |
+|         2 |      10 |
+|        11 |      10 |
+|         2 |      11 |
+|         3 |      11 |
+|         9 |      11 |
+|         3 |      12 |
+|         4 |      12 |
+|         8 |      12 |
+|         9 |      12 |
+|        13 |      12 |
+|        15 |      12 |
+|        18 |      12 |
+|         3 |      13 |
+|        13 |      13 |
+|        15 |      13 |
+|        18 |      13 |
+|         3 |      14 |
+|         7 |      14 |
+|        12 |      14 |
+|        18 |      14 |
++-----------+---------+
