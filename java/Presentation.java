@@ -660,9 +660,7 @@ class insertPanel extends JPanel {
 					jtfFName.setText(jtfFName.getText().trim());
 					jtfLName.setText(jtfLName.getText().replaceAll(" ", ""));
 					jtfLName.setText(jtfLName.getText().trim());
-					jtfSchool.setText(jtfSchool.getText().replaceAll(" ", ""));
 					jtfSchool.setText(jtfSchool.getText().trim());
-					jtfKeywords.setText(jtfKeywords.getText().replaceAll(" ", ""));
 					jtfKeywords.setText(jtfKeywords.getText().trim());
 
 					String fName = jtfFName.getText();
@@ -803,9 +801,7 @@ class updatePanel extends JPanel {
 					jtfFName.setText(jtfFName.getText().trim());
 					jtfLName.setText(jtfLName.getText().replaceAll(" ", ""));
 					jtfLName.setText(jtfLName.getText().trim());
-					jtfSchool.setText(jtfSchool.getText().replaceAll(" ", ""));
 					jtfSchool.setText(jtfSchool.getText().trim());
-					jtfKeywords.setText(jtfKeywords.getText().replaceAll(" ", ""));
 					jtfKeywords.setText(jtfKeywords.getText().trim());
 
 					String facID = jtfID.getText();
