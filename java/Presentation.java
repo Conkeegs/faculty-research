@@ -352,8 +352,8 @@ class queryPanel extends JPanel {
 
 	private static final long serialVersionUID = 5635321639571267414L;
 
-	private final String FAC = "Faculty";
-	private final String STUD = "Student";
+	private final String FAC = "Search for Faculty";
+	private final String STUD = "Search for Students";
 
 	private JPanel jpQueryFields;
 	private String openedFields;
@@ -616,12 +616,14 @@ class insertPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if ((jtfFName.getText() == null || jtfFName.getText().equals("")) || (jtfLName.getText() == null || jtfLName.getText().equals("")) 
-				|| (jtfSchool.getText() == null || jtfSchool.getText().equals("")) || (jtaAbstract.getText() == null || jtaAbstract.getText().equals(""))
-				|| (jtfKeywords.getText() == null || jtfKeywords.getText().equals(""))) {
+				if ((jtfFName.getText() == null || jtfFName.getText().equals(""))
+						|| (jtfLName.getText() == null || jtfLName.getText().equals(""))
+						|| (jtfSchool.getText() == null || jtfSchool.getText().equals(""))
+						|| (jtaAbstract.getText() == null || jtaAbstract.getText().equals(""))
+						|| (jtfKeywords.getText() == null || jtfKeywords.getText().equals(""))) {
 
-					JOptionPane.showMessageDialog(null, "Please fill out all fields!",
-							"Invalid Insert Information", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Please fill out all fields!", "Invalid Insert Information",
+							JOptionPane.ERROR_MESSAGE);
 
 				} else {
 
@@ -642,16 +644,151 @@ class insertPanel extends JPanel {
 
 					if (Presentation.getDLayer().insertFac(fName, lName, school, fAbstract, keywords)) {
 
-						JOptionPane.showMessageDialog(null, "Member successfully inserted!", "Entry Added", JOptionPane.OK_OPTION);
+						JOptionPane.showMessageDialog(null, "Member successfully inserted!", "Entry Added",
+								JOptionPane.OK_OPTION);
+
+					} else {
+
+						JOptionPane.showMessageDialog(null, "Member was unable to be inserted!", "Entry Error",
+								JOptionPane.ERROR_MESSAGE);
 
 					}
-					else {
 
-						JOptionPane.showMessageDialog(null, "Member was unable to be inserted!", "Entry Error", JOptionPane.ERROR_MESSAGE);
+					jtfFName.setText("");
+					jtfLName.setText("");
+					jtfSchool.setText("");
+					jtaAbstract.setText("");
+					jtfKeywords.setText("");
+
+				}
+
+			}
+		});
+
+		jbBack.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				Presentation.setOpenedPanel(new loginUser());
+
+			}
+		});
+	}
+}
+
+/**
+ * Accepts Data to update a Faculty Member.
+ * 
+ * @author Conor Keegan
+ * @author Eli Hopkins
+ * @author Evan Hiltzik
+ * @author Nicholas Johnson
+ */
+class updatePanel extends JPanel {
+	private static final long serialVersionUID = -1597640241890801649L;
+
+	public updatePanel() {
+		// Instantiate components
+		JPanel jpContents = new JPanel();
+		JPanel jpID = new JPanel();
+		JPanel jpFName = new JPanel();
+		JPanel jpLName = new JPanel();
+		JPanel jpSchool = new JPanel();
+		JPanel jpAbstract = new JPanel();
+		JPanel jpKeywords = new JPanel();
+		JTextField jtfID = new JTextField(20);
+		JTextField jtfFName = new JTextField(20);
+		JTextField jtfLName = new JTextField(20);
+		JTextField jtfSchool = new JTextField(20);
+		JTextField jtfKeywords = new JTextField(20);
+		JTextArea jtaAbstract = new JTextArea(20, 25);
+		JButton jbSubmit = new JButton("Submit");
+		JButton jbBack = new JButton("Back");
+
+		// general setup of components
+		jpContents.setLayout(new BoxLayout(jpContents, BoxLayout.Y_AXIS));
+		jtaAbstract.setLineWrap(true);
+
+		// Add components to respective panels
+		jpID.add(new JLabel("Faculty ID: "));
+		jpID.add(jtfID);
+		jpFName.add(new JLabel("First Name: "));
+		jpFName.add(jtfFName);
+		jpLName.add(new JLabel("Last Name: "));
+		jpLName.add(jtfLName);
+		jpSchool.add(new JLabel("School: "));
+		jpSchool.add(jtfSchool);
+		jpAbstract.add(jtaAbstract);
+		jpKeywords.add(new JLabel("Keywords: "));
+		jpKeywords.add(jtfKeywords);
+		JScrollPane jtaAbstractScroll = new JScrollPane(jpAbstract, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+		// Add components to form
+		jpContents.add(jpID);
+		jpContents.add(jpFName);
+		jpContents.add(jpLName);
+		jpContents.add(jpSchool);
+		jpContents.add(new JLabel("Abstract: "));
+		jpContents.add(jtaAbstractScroll);
+		jpContents.add(jpKeywords);
+		jpContents.add(jbSubmit);
+		jpContents.add(jbBack);
+
+		add(jpContents);
+
+		jbSubmit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (jtfID.getText() == null || jtfID.getText().equals("")) {
+
+					JOptionPane.showMessageDialog(null, "Please specifiy a faculty ID!", "Invalid Update Information",
+							JOptionPane.ERROR_MESSAGE);
+
+				} else {
+
+					try {
+
+						Integer.parseInt(jtfID.getText());
+
+					} catch (final NumberFormatException nfe) {
+						JOptionPane.showMessageDialog(null, "Please enter in a number value for the faculty ID!", "ID Error",
+								JOptionPane.ERROR_MESSAGE);
+						jtfID.setText("");
+					}
+
+					jtfID.setText(jtfID.getText().replaceAll(" ", ""));
+					jtfID.setText(jtfID.getText().trim());
+					jtfFName.setText(jtfFName.getText().replaceAll(" ", ""));
+					jtfFName.setText(jtfFName.getText().trim());
+					jtfLName.setText(jtfLName.getText().replaceAll(" ", ""));
+					jtfLName.setText(jtfLName.getText().trim());
+					jtfSchool.setText(jtfSchool.getText().replaceAll(" ", ""));
+					jtfSchool.setText(jtfSchool.getText().trim());
+					jtfKeywords.setText(jtfKeywords.getText().replaceAll(" ", ""));
+					jtfKeywords.setText(jtfKeywords.getText().trim());
+
+					String facID = jtfID.getText();
+					String fName = jtfFName.getText();
+					String lName = jtfLName.getText();
+					String school = jtfSchool.getText();
+					String fAbstract = jtaAbstract.getText();
+					ArrayList<String> keywords = Presentation.parseCommaList(jtfKeywords.getText());
+
+					if (Presentation.getDLayer().updateFac(facID, fName, lName, school, fAbstract, keywords)) {
+
+						JOptionPane.showMessageDialog(null, "Member successfully updated!", "Entry Updated",
+								JOptionPane.INFORMATION_MESSAGE);
+
+					} else {
+
+						JOptionPane.showMessageDialog(null, "Member was unable to be updated!", "Entry Error",
+								JOptionPane.ERROR_MESSAGE);
 
 					}
-					
 
+					jtfID.setText("");
 					jtfFName.setText("");
 					jtfLName.setText("");
 					jtfSchool.setText("");
@@ -679,7 +816,9 @@ class insertPanel extends JPanel {
  * member.
  */
 class facPanel extends JPanel {
-	private final String INS = "Insert";
+	private final String INS = "Insert Faculty";
+	private final String UPDATE = "Update Faculty";
+	private final String DELETE = "Delete Faculty";
 	private final String QUERY = "Query";
 	private JPanel openedPanel;
 	private JPanel queryPanelFac = new queryPanel(true);
@@ -691,6 +830,8 @@ class facPanel extends JPanel {
 		contents.setLayout(new BoxLayout(contents, BoxLayout.Y_AXIS));
 
 		jcbInsQuery.addItem(INS);
+		jcbInsQuery.addItem(UPDATE);
+		jcbInsQuery.addItem(DELETE);
 		jcbInsQuery.addItem(QUERY);
 
 		jcbInsQuery.setSelectedItem(INS);
@@ -712,8 +853,14 @@ class facPanel extends JPanel {
 					Presentation.getPLayer().revalidate();
 					Presentation.getPLayer().repaint();
 					Presentation.getPLayer().pack();
-				}
-				if (jcbInsQuery.getSelectedItem().equals(QUERY) && !(openedPanel instanceof queryPanel)) {
+				} else if (jcbInsQuery.getSelectedItem().equals(UPDATE) && !(openedPanel instanceof updatePanel)) {
+					contents.remove(openedPanel);
+					openedPanel = new updatePanel();
+					contents.add(openedPanel);
+					Presentation.getPLayer().revalidate();
+					Presentation.getPLayer().repaint();
+					Presentation.getPLayer().pack();
+				} else if (jcbInsQuery.getSelectedItem().equals(QUERY) && !(openedPanel instanceof queryPanel)) {
 					contents.remove(openedPanel);
 					openedPanel = queryPanelFac;
 					contents.add(openedPanel);

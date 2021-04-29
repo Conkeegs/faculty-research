@@ -567,7 +567,8 @@ public class DataLayer {
         }
     }
 
-    public boolean insertFac(String fName, String lName, String school, String facAbstract, ArrayList<String> keywords) {
+    public boolean insertFac(String fName, String lName, String school, String facAbstract,
+            ArrayList<String> keywords) {
 
         String sql = "INSERT INTO faculty (firstname, lastname, school, username, pwhash, salt, facultyAbstract) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
@@ -621,94 +622,82 @@ public class DataLayer {
 
     }
 
-    public boolean updateFac(int facultyID, String fName, String lName, String school, String facAbstract,
+    public boolean updateFac(String facultyID, String fName, String lName, String school, String facAbstract,
             ArrayList<String> keywords) {
-        try {
-            conn.setAutoCommit(false);
 
-            if (!fName.equals("")) {
-                PreparedStatement pStatement = conn
-                        .prepareStatement("UPDATE faculty SET firstName=? WHERE facultyID=?;");
+        if ((facultyID == null || facultyID.equals("")) && (fName == null || fName.equals(""))
+                && (lName == null || lName.equals("")) && (school == null || school.equals(""))
+                && (facAbstract == null || facAbstract.equals(""))) {
 
-                pStatement.setString(1, fName);
-                pStatement.setInt(2, facultyID);
-
-                pStatement.executeUpdate();
-
-                pStatement.close();
-            }
-
-            if (!lName.equals("")) {
-                PreparedStatement pStatement = conn
-                        .prepareStatement("UPDATE faculty SET lastName=? WHERE facultyID=?;");
-
-                pStatement.setString(1, lName);
-                pStatement.setInt(2, facultyID);
-
-                pStatement.executeUpdate();
-
-                pStatement.close();
-            }
-
-            if (!school.equals("")) {
-                PreparedStatement pStatement = conn.prepareStatement("UPDATE faculty SET school=? WHERE facultyID=?;");
-
-                pStatement.setString(1, school);
-                pStatement.setInt(2, facultyID);
-
-                pStatement.executeUpdate();
-
-                pStatement.close();
-            }
-
-            if (!facAbstract.equals("")) {
-                PreparedStatement pStatement = conn
-                        .prepareStatement("UPDATE faculty SET facultyAbstract=? WHERE facultyID=?;");
-
-                pStatement.setString(1, facAbstract);
-                pStatement.setInt(2, facultyID);
-
-                pStatement.executeUpdate();
-
-                pStatement.close();
-            }
-
-            if (keywords.size() != 0) {
-                for (String i : keywords) {
-                    if (i.equals("")) {
-                        break;
-                    }
-
-                    PreparedStatement pStatement = conn
-                            .prepareStatement("INSERT INTO facultyKeywords (facultyID, keywords) VALUES (?, ?);");
-
-                    pStatement.setInt(1, facultyID);
-                    pStatement.setString(2, i);
-
-                    pStatement.executeUpdate();
-
-                    pStatement.close();
-                }
-            }
-
-            conn.commit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            try {
-                conn.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
             return false;
-        } finally {
-            try {
-                conn.setAutoCommit(true);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+
         }
 
-        return true;
+        ArrayList<String> specifiedFacultyInfo = new ArrayList<String>();
+        ArrayList<String> parameterNames = new ArrayList<String>();
+        String sql = "UPDATE faculty SET";
+
+        // add passed-in parameters to an ArrayList
+        specifiedFacultyInfo.add(fName);
+        specifiedFacultyInfo.add(lName);
+        specifiedFacultyInfo.add(school);
+        specifiedFacultyInfo.add(facAbstract);
+
+        // add possible variable names for queries to take in
+        parameterNames.add("firstName");
+        parameterNames.add("lastName");
+        parameterNames.add("school");
+        parameterNames.add("facultyAbstract");
+
+        for (int i = 0; i < specifiedFacultyInfo.size(); i++) {
+
+            if (specifiedFacultyInfo.get(i) == null || specifiedFacultyInfo.get(i).equals("")) {
+
+                specifiedFacultyInfo.remove(i);
+                parameterNames.remove(i);
+                i -= 1;
+
+            } else if (sql.contains("SET ")) {
+
+                sql += ", " + parameterNames.get(i) + "='" + specifiedFacultyInfo.get(i) + "' ";
+
+            } else {
+
+                sql += " " + parameterNames.get(i) + "='" + specifiedFacultyInfo.get(i) + "'";
+
+            }
+
+        }
+
+        sql += "WHERE facultyID = '" + facultyID + "'";
+
+        System.out.println(sql);
+
+        try {
+
+            for (int i = 0; i < keywords.size(); i++) {
+
+                PreparedStatement pStatement = conn
+                        .prepareStatement("INSERT INTO facultyKeywords (facultyID, keywords) VALUES (?, ?)");
+    
+                pStatement.setInt(1, Integer.parseInt(facultyID));
+                pStatement.setString(2, keywords.get(i));
+    
+                pStatement.executeUpdate();
+    
+            }
+
+            statement = conn.createStatement();
+            statement.executeUpdate(sql);
+
+            return true;
+
+        } catch (SQLException e) {
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+
     }
 
     /**
