@@ -30,8 +30,6 @@ import javax.swing.JScrollPane;
  * 
  * @author Conor Keegan
  * @author Eli Hopkins
- * @author Evan Hiltzik
- * @author Nicholas Johnson
  */
 public class Presentation extends JFrame {
 
@@ -51,7 +49,7 @@ public class Presentation extends JFrame {
 		// Set window title
 		super("ISTE-330 Group Project - Faculty Research Database");
 
-		System.out.println("Faculty Research Database\nISTE-330\nBy: Conor Keegan, Eli Hopkins, Evan Hiltzik");
+		System.out.println("Faculty Research Database\nISTE-330\nBy: Conor Keegan and Eli Hopkins");
 
 		// Try to load the database driver
 		if (dLayer.loadDriver()) {
@@ -222,10 +220,20 @@ public class Presentation extends JFrame {
 		pLayer.pack();
 	}
 
+	/**
+	 * Getter for Presentation Layer Object.
+	 * 
+	 * @return Presentation Layer
+	 */
 	public static Presentation getPLayer() {
 		return pLayer;
 	}
 
+	/**
+	 * Getter for Data Layer Object.
+	 * 
+	 * @return Data Layer
+	 */
 	public static DataLayer getDLayer() {
 		return dLayer;
 	}
@@ -236,8 +244,10 @@ public class Presentation extends JFrame {
 	 * @param args String[] command-line args
 	 */
 	public static void main(String[] args) {
+		// Instantiate Data Layer
 		dLayer = new DataLayer();
 
+		// Check modes and pass the appropriate one to the constructor
 		if (args.length != 0 && args[0].equals("1")) {
 			pLayer = new Presentation(1);
 		} else if (args.length != 0 && args[0].equals("2")) {
@@ -257,13 +267,10 @@ public class Presentation extends JFrame {
  * 
  * @author Conor Keegan
  * @author Eli Hopkins
- * @author Evan Hiltzik
- * @author Nicholas Johnson
  */
 class loginUser extends JPanel {
 
 	private static final long serialVersionUID = 3814139183564072897L;
-	private JPanel queryPanelFac = new queryPanel(true);
 	private JPanel queryPanelStud = new queryPanel(false);
 
 	/**
@@ -350,8 +357,6 @@ class loginUser extends JPanel {
  * 
  * @author Conor Keegan
  * @author Eli Hopkins
- * @author Evan Hiltzik
- * @author Nicholas Johnson
  */
 class queryPanel extends JPanel {
 
@@ -364,6 +369,11 @@ class queryPanel extends JPanel {
 	private String openedFields;
 	private boolean inFac;
 
+	/**
+	 * Instantiates a Query Panel.
+	 * 
+	 * @param inFac Whether or not this is being called from a faculty user
+	 */
 	public queryPanel(boolean inFac) {
 		// Instantiate components
 		JComboBox<String> jcbFacStud = new JComboBox<String>();
@@ -458,6 +468,7 @@ class queryPanel extends JPanel {
 		jpQueryFields.add(jbSubmit);
 		jpQueryFields.add(jbBack);
 
+		// Style Buttons
 		jbBack.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0), jbBack.getBorder()));
 		jbSubmit.setHorizontalAlignment(JButton.CENTER);
 		jbSubmit.setAlignmentX(CENTER_ALIGNMENT);
@@ -553,8 +564,10 @@ class queryPanel extends JPanel {
 				String school = jtfSchool.getText();
 				ArrayList<String> skills = Presentation.parseCommaList(jtfSkills.getText());
 
+				// Run the requested query
 				String res = Presentation.getDLayer().getStudentInfo(fName, lName, school, skills);
 
+				// Go to results page
 				Presentation.setOpenedPanel(new queryResults(res, inFac));
 			}
 		});
@@ -586,6 +599,9 @@ class queryPanel extends JPanel {
 class insertPanel extends JPanel {
 	private static final long serialVersionUID = -1597640241890801649L;
 
+	/**
+	 * Instantiates an Insert Panel.
+	 */
 	public insertPanel() {
 		// Instantiate components
 		JPanel jpContents = new JPanel();
@@ -631,6 +647,7 @@ class insertPanel extends JPanel {
 
 		add(jpContents);
 
+		// Add a border around the panel
 		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10),
 			BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED, Color.GRAY, Color.BLACK),
 			BorderFactory.createEmptyBorder(15, 15, 15, 15))));
@@ -645,6 +662,7 @@ class insertPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+				// Check that all fields were filled
 				if ((jtfFName.getText() == null || jtfFName.getText().equals(""))
 						|| (jtfLName.getText() == null || jtfLName.getText().equals(""))
 						|| (jtfSchool.getText() == null || jtfSchool.getText().equals(""))
@@ -656,6 +674,7 @@ class insertPanel extends JPanel {
 
 				} else {
 
+					// Ensure correct formatting for fields
 					jtfFName.setText(jtfFName.getText().replaceAll(" ", ""));
 					jtfFName.setText(jtfFName.getText().trim());
 					jtfLName.setText(jtfLName.getText().replaceAll(" ", ""));
@@ -669,6 +688,7 @@ class insertPanel extends JPanel {
 					String fAbstract = jtaAbstract.getText();
 					ArrayList<String> keywords = Presentation.parseCommaList(jtfKeywords.getText());
 
+					// Try to insert the new faculty member
 					if (Presentation.getDLayer().insertFac(fName, lName, school, fAbstract, keywords)) {
 
 						JOptionPane.showMessageDialog(null, "Member successfully inserted!", "Entry Added",
@@ -708,12 +728,13 @@ class insertPanel extends JPanel {
  * 
  * @author Conor Keegan
  * @author Eli Hopkins
- * @author Evan Hiltzik
- * @author Nicholas Johnson
  */
 class updatePanel extends JPanel {
 	private static final long serialVersionUID = -1597640241890801649L;
 
+	/**
+	 * Instantiate an Update Panel.
+	 */
 	public updatePanel() {
 		// Instantiate components
 		JPanel jpContents = new JPanel();
@@ -764,6 +785,7 @@ class updatePanel extends JPanel {
 
 		add(jpContents);
 
+		// Add border around panel
 		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10),
 			BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED, Color.GRAY, Color.BLACK),
 			BorderFactory.createEmptyBorder(15, 15, 15, 15))));
@@ -778,6 +800,7 @@ class updatePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+				// Ensure a faculty ID was entered
 				if (jtfID.getText() == null || jtfID.getText().equals("")) {
 
 					JOptionPane.showMessageDialog(null, "Please specifiy a faculty ID!", "Invalid Update Information",
@@ -795,6 +818,7 @@ class updatePanel extends JPanel {
 						jtfID.setText("");
 					}
 
+					// Ensure correct formatting for input
 					jtfID.setText(jtfID.getText().replaceAll(" ", ""));
 					jtfID.setText(jtfID.getText().trim());
 					jtfFName.setText(jtfFName.getText().replaceAll(" ", ""));
@@ -851,12 +875,13 @@ class updatePanel extends JPanel {
  * 
  * @author Conor Keegan
  * @author Eli Hopkins
- * @author Evan Hiltzik
- * @author Nicholas Johnson
  */
 class deletePanel extends JPanel {
 	private static final long serialVersionUID = -1597640241890801649L;
 
+	/**
+	 * Instantiate a Delete Panel.
+	 */
 	public deletePanel() {
 		// Instantiate components
 		JPanel jpContents = new JPanel();
@@ -879,6 +904,7 @@ class deletePanel extends JPanel {
 
 		add(jpContents);
 
+		// Add a border around the panel
 		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10),
 			BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED, Color.GRAY, Color.BLACK),
 			BorderFactory.createEmptyBorder(15, 15, 15, 15))));
@@ -915,6 +941,7 @@ class deletePanel extends JPanel {
 
 					String facID = jtfID.getText();
 
+					// Try to delete the faculty member
 					if (Presentation.getDLayer().deleteFac(facID)) {
 
 						JOptionPane.showMessageDialog(null, "Member successfully deleted!", "Entry Deleted",
@@ -957,6 +984,9 @@ class facPanel extends JPanel {
 	private JPanel openedPanel;
 	private JPanel queryPanelFac = new queryPanel(true);
 
+	/**
+	 * Instantiate a faculty panel.
+	 */
 	public facPanel() {
 		JComboBox<String> jcbInsQuery = new JComboBox<String>();
 		JPanel contents = new JPanel();
@@ -1023,8 +1053,6 @@ class facPanel extends JPanel {
  * 
  * @author Conor Keegan
  * @author Eli Hopkins
- * @author Evan Hiltzik
- * @author Nicholas Johnson
  */
 class queryResults extends JPanel {
 
@@ -1038,12 +1066,16 @@ class queryResults extends JPanel {
 	 */
 	public queryResults(String resContent, boolean fromFac) {
 
+		// Create components
 		JPanel resContentContainer = new JPanel(new BorderLayout());
 		JTextArea resContentContainerText = new JTextArea(resContent);
+
+		// Style the text area
 		resContentContainerText.setLineWrap(true);
 		resContentContainerText.setWrapStyleWord(true);
 		resContentContainer.setPreferredSize(new Dimension(500, 700));
 
+		// Ensure scrollbar is shown
 		JScrollPane resContentPane = new JScrollPane(resContentContainerText, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		resContentContainer.add(resContentPane);
