@@ -306,7 +306,8 @@ public class DataLayer {
             // 'greatestMatchingFaculty' ArrayList
             for (int i = 0; i < greatestMatchingFaculty.size(); i++) {
 
-                facultyInfo += "First Name: " + greatestMatchingFaculty.get(i).get(1) + "\n" + "Last Name: "
+                facultyInfo += "Faculty ID: " + greatestMatchingFaculty.get(i).get(0) + "\n" + "First Name: "
+                        + greatestMatchingFaculty.get(i).get(1) + "\n" + "Last Name: "
                         + greatestMatchingFaculty.get(i).get(2) + "\n" + "School: "
                         + greatestMatchingFaculty.get(i).get(3) + "\n" + "Abstract: "
                         + greatestMatchingFaculty.get(i).get(4) + "\n\n";
@@ -622,6 +623,31 @@ public class DataLayer {
 
     }
 
+    public boolean deleteFac(String facultyID) {
+
+        if (facultyID == null || facultyID.equals("")) {
+
+            return false;
+
+        }
+
+        String sql = "DELETE FROM faculty WHERE facultyID = '" + facultyID + "'";
+
+        try {
+
+            statement = conn.createStatement();
+            statement.executeUpdate(sql);
+
+            return true;
+
+        } catch (SQLException e) {
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
+
     public boolean updateFac(String facultyID, String fName, String lName, String school, String facAbstract,
             ArrayList<String> keywords) {
 
@@ -671,20 +697,18 @@ public class DataLayer {
 
         sql += "WHERE facultyID = '" + facultyID + "'";
 
-        System.out.println(sql);
-
         try {
 
             for (int i = 0; i < keywords.size(); i++) {
 
                 PreparedStatement pStatement = conn
                         .prepareStatement("INSERT INTO facultyKeywords (facultyID, keywords) VALUES (?, ?)");
-    
+
                 pStatement.setInt(1, Integer.parseInt(facultyID));
                 pStatement.setString(2, keywords.get(i));
-    
+
                 pStatement.executeUpdate();
-    
+
             }
 
             statement = conn.createStatement();

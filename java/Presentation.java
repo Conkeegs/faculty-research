@@ -588,14 +588,14 @@ class insertPanel extends JPanel {
 		jtaAbstract.setLineWrap(true);
 
 		// Add components to respective panels
-		jpFName.add(new JLabel("First Name: "));
+		jpFName.add(new JLabel("New First Name: "));
 		jpFName.add(jtfFName);
-		jpLName.add(new JLabel("Last Name: "));
+		jpLName.add(new JLabel("New Last Name: "));
 		jpLName.add(jtfLName);
-		jpSchool.add(new JLabel("School: "));
+		jpSchool.add(new JLabel("New School: "));
 		jpSchool.add(jtfSchool);
 		jpAbstract.add(jtaAbstract);
-		jpKeywords.add(new JLabel("Keywords: "));
+		jpKeywords.add(new JLabel("New Keywords: "));
 		jpKeywords.add(jtfKeywords);
 		JScrollPane jtaAbstractScroll = new JScrollPane(jpAbstract, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -604,7 +604,7 @@ class insertPanel extends JPanel {
 		jpContents.add(jpFName);
 		jpContents.add(jpLName);
 		jpContents.add(jpSchool);
-		jpContents.add(new JLabel("Abstract: "));
+		jpContents.add(new JLabel("New Abstract: "));
 		jpContents.add(jtaAbstractScroll);
 		jpContents.add(jpKeywords);
 		jpContents.add(jbSubmit);
@@ -645,7 +645,7 @@ class insertPanel extends JPanel {
 					if (Presentation.getDLayer().insertFac(fName, lName, school, fAbstract, keywords)) {
 
 						JOptionPane.showMessageDialog(null, "Member successfully inserted!", "Entry Added",
-								JOptionPane.OK_OPTION);
+								JOptionPane.INFORMATION_MESSAGE);
 
 					} else {
 
@@ -710,16 +710,16 @@ class updatePanel extends JPanel {
 		jtaAbstract.setLineWrap(true);
 
 		// Add components to respective panels
-		jpID.add(new JLabel("Faculty ID: "));
+		jpID.add(new JLabel("New Faculty ID: "));
 		jpID.add(jtfID);
-		jpFName.add(new JLabel("First Name: "));
+		jpFName.add(new JLabel("New First Name: "));
 		jpFName.add(jtfFName);
-		jpLName.add(new JLabel("Last Name: "));
+		jpLName.add(new JLabel("New Last Name: "));
 		jpLName.add(jtfLName);
-		jpSchool.add(new JLabel("School: "));
+		jpSchool.add(new JLabel("New School: "));
 		jpSchool.add(jtfSchool);
 		jpAbstract.add(jtaAbstract);
-		jpKeywords.add(new JLabel("Keywords: "));
+		jpKeywords.add(new JLabel("New Keywords: "));
 		jpKeywords.add(jtfKeywords);
 		JScrollPane jtaAbstractScroll = new JScrollPane(jpAbstract, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -729,7 +729,7 @@ class updatePanel extends JPanel {
 		jpContents.add(jpFName);
 		jpContents.add(jpLName);
 		jpContents.add(jpSchool);
-		jpContents.add(new JLabel("Abstract: "));
+		jpContents.add(new JLabel("New Abstract: "));
 		jpContents.add(jtaAbstractScroll);
 		jpContents.add(jpKeywords);
 		jpContents.add(jbSubmit);
@@ -812,6 +812,95 @@ class updatePanel extends JPanel {
 }
 
 /**
+ * Accepts Data to update a Faculty Member.
+ * 
+ * @author Conor Keegan
+ * @author Eli Hopkins
+ * @author Evan Hiltzik
+ * @author Nicholas Johnson
+ */
+class deletePanel extends JPanel {
+	private static final long serialVersionUID = -1597640241890801649L;
+
+	public deletePanel() {
+		// Instantiate components
+		JPanel jpContents = new JPanel();
+		JPanel jpID = new JPanel();
+		JTextField jtfID = new JTextField(20);
+		JButton jbSubmit = new JButton("Submit");
+		JButton jbBack = new JButton("Back");
+
+		// general setup of components
+		jpContents.setLayout(new BoxLayout(jpContents, BoxLayout.Y_AXIS));
+
+		// Add components to respective panels
+		jpID.add(new JLabel("Faculty ID: "));
+		jpID.add(jtfID);
+
+		// Add components to form
+		jpContents.add(jpID);
+		jpContents.add(jbSubmit);
+		jpContents.add(jbBack);
+
+		add(jpContents);
+
+		jbSubmit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (jtfID.getText() == null || jtfID.getText().equals("")) {
+
+					JOptionPane.showMessageDialog(null, "Please specifiy a faculty ID to delete!", "Invalid Delete Information",
+							JOptionPane.ERROR_MESSAGE);
+
+				} else {
+
+					try {
+
+						Integer.parseInt(jtfID.getText());
+
+					} catch (final NumberFormatException nfe) {
+						JOptionPane.showMessageDialog(null, "Please enter in a number value for the faculty ID!", "ID Error",
+								JOptionPane.ERROR_MESSAGE);
+						jtfID.setText("");
+					}
+
+					jtfID.setText(jtfID.getText().replaceAll(" ", ""));
+					jtfID.setText(jtfID.getText().trim());
+
+					String facID = jtfID.getText();
+
+					if (Presentation.getDLayer().deleteFac(facID)) {
+
+						JOptionPane.showMessageDialog(null, "Member successfully deleted!", "Entry Deleted",
+								JOptionPane.INFORMATION_MESSAGE);
+
+					} else {
+
+						JOptionPane.showMessageDialog(null, "Member was unable to be deleted!", "Delete Error",
+								JOptionPane.ERROR_MESSAGE);
+
+					}
+
+					jtfID.setText("");
+
+				}
+
+			}
+		});
+
+		jbBack.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				Presentation.setOpenedPanel(new loginUser());
+
+			}
+		});
+	}
+}
+
+/**
  * This class sets up the JPanel that appears when a user signs in as a faculty
  * member.
  */
@@ -856,6 +945,13 @@ class facPanel extends JPanel {
 				} else if (jcbInsQuery.getSelectedItem().equals(UPDATE) && !(openedPanel instanceof updatePanel)) {
 					contents.remove(openedPanel);
 					openedPanel = new updatePanel();
+					contents.add(openedPanel);
+					Presentation.getPLayer().revalidate();
+					Presentation.getPLayer().repaint();
+					Presentation.getPLayer().pack();
+				} else if (jcbInsQuery.getSelectedItem().equals(DELETE) && !(openedPanel instanceof deletePanel)) {
+					contents.remove(openedPanel);
+					openedPanel = new deletePanel();
 					contents.add(openedPanel);
 					Presentation.getPLayer().revalidate();
 					Presentation.getPLayer().repaint();
