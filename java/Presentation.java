@@ -883,6 +883,16 @@ class deletePanel extends JPanel {
 
 		add(jpContents);
 
+		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10),
+			BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED, Color.GRAY, Color.BLACK),
+			BorderFactory.createEmptyBorder(15, 15, 15, 15))));
+
+		jbBack.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0), jbBack.getBorder()));
+		jbSubmit.setHorizontalAlignment(JButton.CENTER);
+		jbSubmit.setAlignmentX(CENTER_ALIGNMENT);
+		jbBack.setHorizontalAlignment(JButton.CENTER);
+		jbBack.setAlignmentX(CENTER_ALIGNMENT);
+
 		jbSubmit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
