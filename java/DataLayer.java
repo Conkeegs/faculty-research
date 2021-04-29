@@ -15,10 +15,7 @@ import javax.crypto.spec.PBEKeySpec;
  * 
  * @author Conor Keegan
  * @author Eli Hopkins
- * @author Evan Hiltzik
- * @author Nicholas Johnson
  */
-
 public class DataLayer {
 
     private final String url = "jdbc:mysql://localhost/facultyResearch";
@@ -129,7 +126,7 @@ public class DataLayer {
      * @return a string containing the information of all faculty members fetched.
      */
     public String getFacultyInfo(String firstName, String lastName, String school, String facultyAbstract,
-            ArrayList<String> keyWords) {
+           ArrayList<String> keyWords) {
 
         // instantiation of variables for use later in the method
         ArrayList<String> specifiedFacultyInfo = new ArrayList<String>();
@@ -568,18 +565,34 @@ public class DataLayer {
         }
     }
 
+    /**
+     * Creates a New Faculty User with a Default Username and Password.
+     * 
+     * Default Username: {fName}{lName}@rit.edu
+     * Default Password: password
+     * 
+     * @param fName First name of new user
+     * @param lName Last name of new user
+     * @param school School of new user
+     * @param facAbstract Abstract for new user
+     * @param keywords Keywords to be added to new user
+     * @return boolean Whether or not the operation was successful
+     */
     public boolean insertFac(String fName, String lName, String school, String facAbstract,
             ArrayList<String> keywords) {
 
+        // Initialize variable holding query text
         String sql = "INSERT INTO faculty (firstname, lastname, school, username, pwhash, salt, facultyAbstract) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
         try {
-
+            // Prepare the statement
             PreparedStatement pStatement = conn.prepareStatement(sql);
 
+            // Format username and get a hashed default password
             String username = (fName + lName).toLowerCase() + "@rit.edu";
             String[] hashedPass = hashPass("password");
 
+            // Add variables to prepared statement
             pStatement.setString(1, fName);
             pStatement.setString(2, lName);
             pStatement.setString(3, school);
@@ -588,8 +601,10 @@ public class DataLayer {
             pStatement.setString(6, hashedPass[0]);
             pStatement.setString(7, facAbstract);
 
+            // Execute the statement
             pStatement.executeUpdate();
 
+            /* ----------------------- Get New Faculty ID ----------------------- */
             sql = "SELECT facultyID FROM faculty WHERE username = '" + username + "'";
 
             statement = conn.createStatement();
@@ -597,9 +612,12 @@ public class DataLayer {
             resultSet.next();
 
             int facultyID = resultSet.getInt(1);
+            /* ------------------------------------------------------------------ */
 
+            // Adjust sql variable to hold a statement to add keywords to facultyKeywords
             sql = "INSERT INTO facultyKeywords (facultyID, keywords) VALUES (?, ?)";
 
+            // Loop through and add each keyword
             for (int i = 0; i < keywords.size(); i++) {
 
                 pStatement = conn.prepareStatement(sql);
@@ -611,10 +629,11 @@ public class DataLayer {
 
             }
 
+            // Close open resource and return true if the operation was successful
             pStatement.close();
-
             return true;
 
+        // Return false if something fails
         } catch (SQLException e) {
             return false;
         } catch (Exception e) {
@@ -623,23 +642,34 @@ public class DataLayer {
 
     }
 
+    /**
+     * Delete a Faculty Member.
+     * 
+     * @param facultyID String ID of faculty member to delete
+     * @return boolean Whether or not the operation was successful
+     */
     public boolean deleteFac(String facultyID) {
 
+        // If the faculty ID is blank, this should fail
         if (facultyID == null || facultyID.equals("")) {
 
             return false;
 
         }
 
+        // Store statement to delete the specified facultyID
         String sql = "DELETE FROM faculty WHERE facultyID = '" + facultyID + "'";
 
         try {
 
+            // Run the delete operation
             statement = conn.createStatement();
             statement.executeUpdate(sql);
 
+            // If successful
             return true;
 
+        // Return false if something fails
         } catch (SQLException e) {
             return false;
         } catch (Exception e) {
@@ -674,6 +704,7 @@ public class DataLayer {
         parameterNames.add("lastName");
         parameterNames.add("school");
         parameterNames.add("facultyAbstract");
+
 
         for (int i = 0; i < specifiedFacultyInfo.size(); i++) {
 
@@ -739,14 +770,17 @@ public class DataLayer {
         String[] pwHashInfo = hashPass(pass);
 
         try {
+            // Prepare a statement to add login info to a student
             PreparedStatement pStatement = conn
                     .prepareStatement("UPDATE student SET username=?, pwhash=?, salt=? WHERE studentID=?;");
 
+            // Add variables to statement
             pStatement.setString(1, uname);
             pStatement.setString(2, pwHashInfo[1]);
             pStatement.setString(3, pwHashInfo[0]);
             pStatement.setInt(4, studentID);
 
+            // Add the login info to the student
             pStatement.executeUpdate();
 
             pStatement.close();
@@ -774,14 +808,17 @@ public class DataLayer {
         String[] pwHashInfo = hashPass(pass);
 
         try {
+            // Create a statement to add login info to a faculty member
             PreparedStatement pStatement = conn
                     .prepareStatement("UPDATE faculty SET username=?, pwhash=?, salt=? WHERE facultyID=?;");
 
+            // Add variables to statement
             pStatement.setString(1, uname);
             pStatement.setString(2, pwHashInfo[1]);
             pStatement.setString(3, pwHashInfo[0]);
             pStatement.setInt(4, facultyID);
 
+            // Add the login info
             pStatement.executeUpdate();
 
             pStatement.close();
@@ -809,14 +846,19 @@ public class DataLayer {
         String salt = "";
 
         try {
+            // Create statement to get info for specified username
             PreparedStatement pStatement = conn
                     .prepareStatement("SELECT facultyID, pwhash, salt FROM faculty WHERE username=?");
 
+            // Add username to prepared statement
             pStatement.setString(1, uname);
 
+            // Get matching results
             ResultSet rs = pStatement.executeQuery();
 
+            // Check to ensure a result was returned
             if (rs.next()) {
+                // Get returned values
                 facID = rs.getInt("facultyID");
                 pwhash = rs.getString("pwhash");
                 salt = rs.getString("salt");
@@ -829,6 +871,7 @@ public class DataLayer {
             return -1;
         }
 
+        // Verify retrieved password against inputted password and return the faculty ID if successful
         if (verifyPass(salt, pwhash, pass)) {
             return facID;
         }
@@ -850,13 +893,17 @@ public class DataLayer {
         String salt = "";
 
         try {
+            // Get information for the specified student username
             PreparedStatement pStatement = conn
                     .prepareStatement("SELECT studentID, pwhash, salt FROM student WHERE username=?");
 
+            // Add username to prepared statement
             pStatement.setString(1, uname);
 
+            // Run the query
             ResultSet rs = pStatement.executeQuery();
 
+            // Get results from resultset
             if (rs.next()) {
                 studID = rs.getInt("studentID");
                 pwhash = rs.getString("pwhash");
@@ -870,6 +917,7 @@ public class DataLayer {
             return -1;
         }
 
+        // Check inputted password against retrieved password
         if (verifyPass(salt, pwhash, pass)) {
             return studID;
         }
@@ -886,22 +934,29 @@ public class DataLayer {
      *         (unsuccessful)
      */
     private static String[] hashPass(String plainPass) {
+        // Create a SecureRandom object to be used to generate a salt
         SecureRandom saltGen = new SecureRandom();
 
+        // Generate a salt and store it
         byte[] salt = new byte[32];
         saltGen.nextBytes(salt);
 
+        // Create specs for hashing (Plaintext password, generated salt, run algorithm 10,000 times, length of 500)
         PBEKeySpec kSpec = new PBEKeySpec(plainPass.toCharArray(), salt, 10000, 500);
 
         try {
+            // Create key factory using specified algorithm
             SecretKeyFactory keyFac = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+            // Hash the password
             byte[] hashedPass = keyFac.generateSecret(kSpec).getEncoded();
 
+            // Return the salt and hashed password as strings
             return new String[] { Base64.getEncoder().encodeToString(salt),
                     Base64.getEncoder().encodeToString(hashedPass) };
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
         } finally {
+            // Clear the plaintext password from the key spec
             kSpec.clearPassword();
         }
         return null;
@@ -920,6 +975,7 @@ public class DataLayer {
 
         PBEKeySpec kSpec;
 
+        // Ensure null values were not used and then create the proper key spec
         if ((salt != null && !salt.equals("")) && (hash != null && !hash.equals(""))
                 && (plainPass != null && !plainPass.equals(""))) {
 
@@ -932,9 +988,11 @@ public class DataLayer {
         }
 
         try {
+            // Create a key factory with the specified algorithm
             SecretKeyFactory keyFac = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
             byte[] hashedPass = keyFac.generateSecret(kSpec).getEncoded();
 
+            // Check if the passwords match
             if (Base64.getEncoder().encodeToString(hashedPass).equals(hash)) {
                 return true;
             }
