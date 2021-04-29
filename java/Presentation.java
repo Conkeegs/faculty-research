@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.EtchedBorder;
 import javax.swing.JScrollPane;
 
 /**
@@ -274,6 +275,7 @@ class loginUser extends JPanel {
 		JPanel jpUsername = new JPanel();
 		JPanel jpPass = new JPanel();
 		JPanel jpButtons = new JPanel();
+		JLabel jlHeader = new JLabel("Login as Faculty/Student");
 		JTextField jtfUsername = new JTextField(20);
 		JTextField jtfPass = new JPasswordField(20);
 		JButton jbGuest = new JButton("Continue as Guest");
@@ -334,8 +336,11 @@ class loginUser extends JPanel {
 		jpLogin.add(jpPass);
 		jpLogin.add(jpButtons);
 
+		jlHeader.setHorizontalAlignment(JLabel.CENTER);
+		jlHeader.setAlignmentX(CENTER_ALIGNMENT);
+
 		// Add heading and login form
-		add(new JLabel("Login as Faculty/Student"), BorderLayout.NORTH);
+		add(jlHeader, BorderLayout.NORTH);
 		add(jpLogin);
 	}
 }
@@ -368,7 +373,9 @@ class queryPanel extends JPanel {
 
 		// Set layout and add a border around the form
 		setLayout(new BorderLayout());
-		setBorder(BorderFactory.createLoweredBevelBorder());
+		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10),
+			BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED, Color.GRAY, Color.BLACK),
+			BorderFactory.createEmptyBorder(15, 15, 15, 15))));
 
 		// Add items to dropdown box
 		jcbFacStud.addItem(FAC);
@@ -451,6 +458,12 @@ class queryPanel extends JPanel {
 		jpQueryFields.add(jbSubmit);
 		jpQueryFields.add(jbBack);
 
+		jbBack.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0), jbBack.getBorder()));
+		jbSubmit.setHorizontalAlignment(JButton.CENTER);
+		jbSubmit.setAlignmentX(CENTER_ALIGNMENT);
+		jbBack.setHorizontalAlignment(JButton.CENTER);
+		jbBack.setAlignmentX(CENTER_ALIGNMENT);
+
 		jbSubmit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -516,6 +529,12 @@ class queryPanel extends JPanel {
 		jpSchool.add(jtfSchool);
 		jpSkills.add(new JLabel("Skills: "));
 		jpSkills.add(jtfSkills);
+
+		jbBack.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0), jbBack.getBorder()));
+		jbSubmit.setHorizontalAlignment(JButton.CENTER);
+		jbSubmit.setAlignmentX(CENTER_ALIGNMENT);
+		jbBack.setHorizontalAlignment(JButton.CENTER);
+		jbBack.setAlignmentX(CENTER_ALIGNMENT);
 
 		// Add components to form
 		jpQueryFields.add(jpFName);
@@ -611,6 +630,16 @@ class insertPanel extends JPanel {
 		jpContents.add(jbBack);
 
 		add(jpContents);
+
+		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10),
+			BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED, Color.GRAY, Color.BLACK),
+			BorderFactory.createEmptyBorder(15, 15, 15, 15))));
+
+		jbBack.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0), jbBack.getBorder()));
+		jbSubmit.setHorizontalAlignment(JButton.CENTER);
+		jbSubmit.setAlignmentX(CENTER_ALIGNMENT);
+		jbBack.setHorizontalAlignment(JButton.CENTER);
+		jbBack.setAlignmentX(CENTER_ALIGNMENT);
 
 		jbSubmit.addActionListener(new ActionListener() {
 			@Override
@@ -736,6 +765,16 @@ class updatePanel extends JPanel {
 		jpContents.add(jbBack);
 
 		add(jpContents);
+
+		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10),
+			BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED, Color.GRAY, Color.BLACK),
+			BorderFactory.createEmptyBorder(15, 15, 15, 15))));
+
+		jbBack.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0), jbBack.getBorder()));
+		jbSubmit.setHorizontalAlignment(JButton.CENTER);
+		jbSubmit.setAlignmentX(CENTER_ALIGNMENT);
+		jbBack.setHorizontalAlignment(JButton.CENTER);
+		jbBack.setAlignmentX(CENTER_ALIGNMENT);
 
 		jbSubmit.addActionListener(new ActionListener() {
 			@Override
