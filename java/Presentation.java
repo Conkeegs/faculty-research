@@ -737,7 +737,7 @@ class updatePanel extends JPanel {
 		jtaAbstract.setLineWrap(true);
 
 		// Add components to respective panels
-		jpID.add(new JLabel("New Faculty ID: "));
+		jpID.add(new JLabel("Faculty ID to Update: "));
 		jpID.add(jtfID);
 		jpFName.add(new JLabel("New First Name: "));
 		jpFName.add(jtfFName);
